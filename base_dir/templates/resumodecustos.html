@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="col out-sidebar">
+        <div class="card">
+            <div class="card-header card-header-padrao">
+                <div class="card-titulo-padrao">
+                    Resumo de Custos
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row justify-content-center">
+                    <div class="col-5">
+                        <table class="table table-resumo">
+                            <tbody>
+                                <tr>
+                                    <th>Custo de Materiais:</th>
+                                    <td>R$ {{ "{:,.2f}".format(custo_materiais).replace(",", ";").replace(".", ",").replace(";", ".") }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Custo de Serviços:</th>
+                                    <td>R$ {{ "{:,.2f}".format(custo_servicos).replace(",", ";").replace(".", ",").replace(";", ".") }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Custo Diversos:</th>
+                                    <td>R$ {{ "{:,.2f}".format(custo_diversos).replace(",", ";").replace(".", ",").replace(";", ".") }}</td>
+                                </tr>
+                                <tr><th></th><td></td></tr>
+                                <tr><th></th><td></td></tr>
+                                <tr class="resumo-total">
+                                    <th>Custo Total:</th>
+                                    <td>R$ {{ "{:,.2f}".format(custo_total).replace(",", ";").replace(".", ",").replace(";", ".") }}</td>
+                                </tr>
+                                <tr class="resumo-metro">
+                                    <th>Custo/m²:</th>
+                                    <td>R$ {{ "{:,.2f}".format(custo_metro).replace(",", ";").replace(".", ",").replace(";", ".") }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

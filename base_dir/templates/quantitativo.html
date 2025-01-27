@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="col out-sidebar">
+        <div class="card">
+            <div class="card-header card-header-padrao">
+                <div class="card-titulo-padrao">
+                    Quantitativo de Materiais
+                </div>
+            </div>
+            <div class="card-body">
+                {% if usuario.plano == "Básico" %}
+                    <div class="plano-invalido">
+                        Seu plano atual não permite o acesso a esse relatório!
+                    </div>
+                {% else %}
+                    <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Material</th>
+                            <th>Quantidade</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for material, qtd in qtd_material.items() %}
+                            <tr>
+                                <td>{{ material.capitalize() }}</td>
+                                <td>{{ qtd }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

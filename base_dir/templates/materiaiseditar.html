@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="col out-sidebar">
+        <div class="card">
+            <div class="card-header card-header-padrao">
+                <div class="card-titulo-padrao">
+                    Editar Materiais
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="" id="materiaisForm" class="col-md-3">
+                    {{ form_editar_materiais.csrf_token }}
+                    <div class="form-group mt-2">
+                        {{ form_editar_materiais.nome.label(class="form-control-label") }}
+                        {% if form_editar_materiais.nome.errors %}
+                            {{ form_editar_materiais.nome(class="form-control is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for erro in form_editar_materiais_obra.nome.errors %}
+                                    {{ erro }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form_editar_materiais.nome(class="form-control") }}
+                        {% endif %}
+                    </div>
+                    {{ form_editar_materiais.botao(class="btn btn-form1 mt-3") }}
+                </form>
+
+                <hr>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for material in materiais %}
+                            <tr>
+                                <td>{{ material.nome.capitalize() }}</td>
+                                <td style="width: 300px;">
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

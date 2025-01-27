@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block body %}
+
+    {% if current_user.is_authenticated %}
+        <script>
+            // Redirecionar usuários autenticados da página de cadastro
+            if ("{{ request.path }}" === "{{ url_for('home') }}") {
+                window.location.replace("{{ url_for('dashboard') }}");
+            }
+        </script>
+    {% endif %}
+
+    <section id="inicio" class="section inicio-section">
+        <div class="background-image">
+            <img src="static/images/planodefundo-inicio.jpg" alt="Imagem de Fundo">
+        </div>
+        <div class="container">
+            <div class="inicio-content">
+                <div class="inicio-titulo">CUSTOS DE OBRA</div>
+                <br>
+                <div class="inicio-subtitulo">Gerencie seus gastos de forma prática!</div>
+                <p></p>
+                <a href="{{ url_for('acesso') }}" class="inicio-btn">Acessar</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="sobre" class="section sobre-section">
+        <div class="container">
+            Sobre
+        </div>
+    </section>
+
+    <section id="tutoriais" class="section tutoriais-section">
+        <div class="container">
+            Tutoriais
+        </div>
+    </section>
+
+    <section id="planos" class="section planos-section">
+        <div class="container-fluid mt-5">
+            Planos
+            <div class="row">
+                <div class="col borda-planos">
+                    Acesso Básico <br>
+                    <div class="valor-planos">
+                        GRATUITO
+                    </div>
+                    <hr>
+                    <ul>
+                        <li><div class="itens-planos">Acesso a plataforma</div></li>
+                        <li><div class="itens-planos">Cadastro de Obra - <span class="item-limitado">1 OBRA</span></div></li>
+                        <li><div class="itens-planos">Cadastro de Etapas e Subetapas</div></li>
+                        <li><div class="itens-planos">Cadastros de Materiais - <span class="item-limitado">10 ITENS</span></div></li>
+                        <li><div class="itens-planos">Cadastro de Serviços - <span class="item-limitado">10 ITENS</span></div></li>
+                        <li><div class="itens-planos">Cadastro de Custos Diversos - <span class="item-limitado">10 ITENS</span></div></li>
+                        <li><div class="itens-planos">Lançamentos de Custos - <span class="item-limitado">10 LANÇAMENTOS</span></div></li>
+                        <li><div class="itens-planos">Relatório de Custos por Etapa e Subetapa</div></li>
+                        <li><div class="itens-planos"><span class="item-bloqueado">Relatório de Quantitativo de Materiaias</span></div></li>
+                        <li><div class="itens-planos"><span class="item-bloqueado">Relatório de Fluxo de Caixa Mensal</span></div></li>
+                        <li><div class="itens-planos">Resumo de Custos</div></li>
+                    </ul>
+                </div>
+                <div class="col borda-planos">
+                    Acesso Avançado <br>
+                    <div class="valor-planos">
+                        R$34,90 - Plano Mensal <br>
+                        12x R$29,90 - Plano Anual
+                    </div>
+                    <hr>
+                    <ul>
+                        <li><div class="itens-planos">Acesso a plataforma</div></li>
+                        <li><div class="itens-planos">Cadastro de Obra - <span class="item-limitado">3 OBRAS</span></div></li>
+                        <li><div class="itens-planos">Cadastro de Etapas e Subetapas</div></li>
+                        <li><div class="itens-planos">Cadastros de Materiais - <span class="item-limitado">250 MATERIAIS</span></div></li>
+                        <li><div class="itens-planos">Cadastro de Serviços - <span class="item-limitado">250 ITENS</span></div></li>
+                        <li><div class="itens-planos">Cadastro de Custos Diversos - <span class="item-limitado">250 ITENS</span></div></li>
+                        <li><div class="itens-planos">Lançamentos de Custos - <span class="item-limitado">2000 LANÇAMENTOS</span></div></li>
+                        <li><div class="itens-planos">Relatório de Custos por Etapa e Subetapa</div></li>
+                        <li><div class="itens-planos">Relatório de Quantitativo de Materiaias</span></div></li>
+                        <li><div class="itens-planos">Relatório de Fluxo de Caixa Mensal</span></div></li>
+                        <li><div class="itens-planos">Resumo de Custos</div></li>
+                    </ul>
+                </div>
+                <div class="col borda-planos">
+                    Acesso Premium <br>
+                    <div class="valor-planos">
+                        R$49,90 - Plano Mensal <br>
+                       12x R$41,90 - Plano Anual
+                    </div>
+                    <hr>
+                    <ul>
+                        <li><div class="itens-planos">Acesso a plataforma</div></li>
+                        <li><div class="itens-planos">Cadastro de Obra</div></li>
+                        <li><div class="itens-planos">Cadastro de Etapas e Subetapas</div></li>
+                        <li><div class="itens-planos">Cadastros de Materiais</div></li>
+                        <li><div class="itens-planos">Cadastro de Serviços</div></li>
+                        <li><div class="itens-planos">Cadastro de Custos Diversos</div></li>
+                        <li><div class="itens-planos">Lançamentos de Custos</div></li>
+                        <li><div class="itens-planos">Relatório de Custos por Etapa e Subetapa</div></li>
+                        <li><div class="itens-planos">Relatório de Quantitativo de Materiaias</div></li>
+                        <li><div class="itens-planos">Relatório de Fluxo de Caixa Mensal</div></li>
+                        <li><div class="itens-planos">Resumo de Custos</div></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="section contato-section">
+        <div class="container">
+            Contato
+        </div>
+    </section>
+
+    <footer>
+        Rodapé
+    </footer>
+
+
+{% endblock %}

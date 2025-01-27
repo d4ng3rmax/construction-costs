@@ -1,0 +1,489 @@
+body {
+    background-color: #F8F8FF;
+    padding-top: 6.3em;
+    font-family: "Bookman Old Style", serif;
+}
+
+.section {
+    position: relative;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 1.8em;
+    overflow: hidden;
+}
+
+.inicio-section {
+    position: relative;
+    text-align: center;
+    padding: 100px 0;
+}
+
+.inicio-titulo{
+    color: #FF4500;
+    font-size: 3em;
+    font-weight: bold;
+}
+
+.inicio-subtitulo{
+    font-size: 1.0em;
+}
+
+.background-image img {
+    width: 100%;
+    height: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.inicio-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 100px 0;
+}
+
+.inicio-btn {
+    display: inline-block;
+    padding: 5px 40px;
+    font-size: 1.0em;
+    text-align: center;
+    text-decoration: none;
+    background-color: #008B8B;
+    color: #FFFFFF;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.inicio-btn:hover {
+    color: #FFFFFF;
+    background-color: #006666;
+}
+
+.navbar {
+    background-color: #FFFFFF !important;
+}
+
+.navbar-brand {
+    font-size: 2.0em;
+    margin-left: 3.0em;
+    margin-right: 2.5em;
+}
+
+.navbar-nav .nav-item a {
+    color: #008B8B !important;
+    font-size: 1.15em;
+    margin-left: 1.5em;
+}
+
+.last-item {
+    margin-left: 5.0em;
+    font-weight: bold;
+}
+
+.nav-logged{
+    margin-left: auto;
+}
+
+.navbar-nav .nav-item-logged a {
+    color: #008B8B !important;
+    font-size: 1.15em;
+    margin-left: 1.5em;
+}
+
+.login-form {
+    background-color: #FFFFFF;
+}
+
+.login-titulo {
+    color: #FF4500;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.login-label {
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 1.0em;
+}
+
+.login-btn {
+    display: inline-block;
+    padding: 0.5em 2.5em;
+    font-size: 1.2em;
+    text-align: center;
+    text-decoration: none;
+    background-color: #008B8B;
+    color: #FFFFFF;
+    border-radius: 1.0em;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    color: #FFFFFF;
+    background-color: #006666;
+}
+
+.recuperar-btn {
+    display: inline-block;
+    padding: 0.5em 1.5em;
+    font-size: 1.1em;
+    text-align: center;
+    text-decoration: none;
+    background-color: #008B8B;
+    color: #FFFFFF;
+    border-radius: 1.0em;
+    transition: background-color 0.3s ease;
+}
+
+.recuperar-btn:hover {
+    color: #FFFFFF;
+    background-color: #006666;
+}
+
+.login-cadastro {
+    color: #FF4500;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.login-recuperar {
+    color: #FF4500;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.alterarsenha-titulo {
+    color: #FF4500;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.alterarsenha-label {
+    font-weight: bold;
+    margin-top: 0.5em;
+}
+
+.flashauth{
+    margin-left: 15.0em;
+}
+
+/* Estilize o menu lateral */
+.sidebar {
+    width: 15.0em;
+    position: fixed;
+    top: 5.0em;
+    left: 0;
+    padding-top: 1.2em;
+    z-index: 1;
+    overflow-y: auto; /* Adicione esta linha para permitir a rolagem na barra lateral */
+    max-height: calc(100vh - 5.0em); /* Defina a altura máxima da barra lateral */
+    scrollbar-width: thin; /* Adiciona uma barra de rolagem fina (apenas para navegadores que suportam essa propriedade) */
+    scrollbar-color: transparent transparent;
+}
+
+/* Adiciona um estilo à barra de rolagem para navegadores que suportam a propriedade scrollbar-width */
+.sidebar::-webkit-scrollbar {
+    width: 6px; /* Largura da barra de rolagem */
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Cor do polegar da barra de rolagem */
+}
+
+.item-side{
+}
+
+.item-side a {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+}
+
+.item-side-title{
+    color: #FFFFFF;
+    background-color: #008B8B;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.out-sidebar{
+    margin-left: 3.0em;
+    margin-right: 3.0em;
+    padding-left: 15.0em;
+}
+
+.out-sidebar-planos  {
+    margin-left: 2.0em;
+    margin-right: 1.0em;
+    padding-left: 13.0em;
+}
+
+.card-header-padrao{
+    background-color: #5F9EA0;
+    font-size: 1.1em;
+    padding-left: 0.8em;
+}
+
+.card-titulo-padrao{
+    font-size: 2em;
+    color: #FFFFFF;
+    font-weight: bold;
+}
+
+.card-subtitulo-padrao{
+    color: #98FB98;
+}
+
+.card-subtitulo-padrao a {
+    color: inherit;
+}
+
+.btn-form1 {
+    display: inline-block;
+    padding: 0.5em 1.0em;
+    text-align: center;
+    text-decoration: none;
+    background-color: #FF4500;
+    color: #FFFFFF !important;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-form1:hover,
+.btn-form1:focus {
+    background-color: #FF6347;
+    color: #FFFFFF;
+}
+
+.btn-form2 {
+    display: inline-block;
+    padding: 0.5em 1.0em;
+    text-align: center;
+    background-color: #D3D3D3 !important;
+    color: black !important;
+    border-radius: 12px;
+}
+
+.etapa {
+    font-size: 1.1em;
+    font-weight: bold;
+    background-color: #2ec7c7;
+    color: white;
+}
+
+.subetapa {
+
+}
+
+.borda-lanc {
+    margin-top: 0.4em;
+    padding: 0.5em;
+    border: 1px solid grey;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #edfaf9;
+}
+
+.col-lanc {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.col-lanc-acoes {
+    vertical-align: middle;
+    text-align: center;
+    width: 20px;
+}
+
+.col-lanc-diversos {
+    vertical-align: middle;
+}
+
+.col-lanc-acoes-diversos {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.table-resumo {
+    margin-top: 15px;
+    font-size: 1.2em;
+    border: ridge 5px #FF4500;
+}
+
+.table-resumo th,
+.table-resumo td {
+    border: none;
+}
+
+.table-resumo td {
+    text-align: center;
+}
+
+.resumo-total{
+    font-size: 1.3em;
+    color: white;
+    background-color: #008B8B;
+}
+
+.resumo-metro{
+    color: white;
+    background-color: #5F9EA0;
+}
+
+.perfil-topo {
+    text-align: center;
+    padding: 0.5em;
+}
+
+.borda-planos {
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-top: 0.2em;
+    border: 1px solid #FF4500;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #edfaf9;
+}
+
+
+ul {
+    list-style-type: none;
+}
+
+.itens-planos {
+    text-align: left;
+    font-size: 0.6em;
+}
+
+.itens-planos::before {
+    content: "\2023";
+    color: #FF4500;
+    font-size: 1.15em;
+    margin-right: 5px;
+}
+
+.valor-planos {
+    font-size: 0.57em;
+    font-weight: bold;
+}
+
+.borda-alterar-planos {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    margin-top: 0.5em;
+    border: 1px solid #FF4500;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #edfaf9;
+}
+
+
+ul {
+    list-style-type: none;
+}
+
+
+.titulo-alterar-planos {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+
+.itens-alterar-planos {
+    text-align: left;
+    font-size: 0.95em;
+}
+
+.itens-alterar-planos::before {
+    content: "\2022";
+    color: #992900;
+    font-size: 1.5em;
+    margin-right: 5px;
+}
+
+.valor-alterar-planos {
+    font-size: 0.57em;
+    font-weight: bold;
+}
+
+.valor-alterar-planos{
+    font-size: 1em;
+    font-weight: bold;
+}
+
+
+.item-limitado {
+    font-size: 0.75em;
+    font-weight: bold;
+    color: red;
+}
+
+.item-bloqueado {
+    text-decoration: line-through;
+}
+
+.plano-invalido {
+    font-weight: bold;
+    color: red;
+    text-align: center;
+    margin: 2em;
+}
+
+.perfil-plano-basico {
+    font-weight: bold;
+    font-size: 1.3em;
+    padding: 1em;
+}
+
+.perfil-plano-avancado {
+    color: #008B8B;
+    font-weight: bold;
+    font-size: 1.3em;
+    padding: 1em;
+}
+
+.perfil-plano-premium {
+    color: #FF4500;
+    font-weight: bold;
+    font-size: 1.3em;
+    padding: 1em;
+}
+
+.alterar-plano-btn {
+    display: inline-block;
+    padding: 5px 30px;
+    margin-top: 1em;
+    font-size: 1.3em;
+    text-align: center;
+    text-decoration: none;
+    background-color: #008B8B;
+    color: #FFFFFF;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.alterar-plano-btn:hover {
+    color: #FFFFFF;
+    background-color: #006666;
+}
+
+.alterar-planos-btn {
+    display: inline-block;
+    padding: 5px 30px;
+    margin-top: 1em;
+    font-size: 1.1em;
+    text-align: center;
+    text-decoration: none;
+    background-color: #008B8B;
+    color: #FFFFFF;
+    border-radius: 12px;
+    transition: background-color 0.3s ease;
+}
+
+.alterar-planos-btn:hover {
+    color: #FFFFFF;
+    background-color: #006666;
+}

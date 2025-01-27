@@ -1,0 +1,68 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+    <div class="container-fluid">
+
+        {% if current_user.is_authenticated %}
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='images/logo_home.png') }}" alt="Logo">
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNavLogged">
+                <ul class="navbar-nav">
+                    <li class="nav-item-logged">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('dashboard') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item-logged">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Tutoriais</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav nav-logged me-5">
+                    <li class="nav-item-logged">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('meuperfil') }}">Meu Perfil</a>
+                    </li>
+                    <li class="nav-item-logged">
+                        <a class="nav-link active" aria-current="page" href="{{ url_for('sair') }}">Sair</a>
+                    </li>
+                </ul>
+            </div>
+        {% else %}
+            <a class="navbar-brand" href="{{ url_for('home') }}">
+                <img src="static/images/logo_home.png" alt="Logo">
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="#inicio" onclick="scrollToSection('inicio')">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sobre" onclick="scrollToSection('sobre')">Sobre</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tutoriais" onclick="scrollToSection('tutoriais')">Tutoriais</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#planos" onclick="scrollToSection('planos')">Planos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contato" onclick="scrollToSection('contato')">Contato</a>
+                    </li>
+                    <li class="nav-item last-item">
+                        <a class="nav-link" href="{{ url_for('acesso') }}">Acessar</a>
+                    </li>
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+</nav>
+
+<script>
+    function scrollToSection(sectionId) {
+        var section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start',
+            });
+        } else {
+            window.location.href = "{{ url_for('home') }}#" + sectionId;
+        }
+    }
+</script>

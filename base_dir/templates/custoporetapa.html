@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="col out-sidebar">
+        <div class="card">
+            <div class="card-header card-header-padrao">
+                <div class="card-titulo-padrao">
+                    Custo por Etapa
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-7">
+                         <table class="table">
+                              <thead>
+                                  <tr>
+                                      <th>Etapa</th>
+                                      <th>Valor</th>
+                                      <th>Percentual</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                  {% for etapa, custo in custo_etapa.items() %}
+                                      <tr>
+                                          <td>{{ etapa.capitalize() }}</td>
+                                          <td>R$ {{ custo }}</td>
+                                          <td>{{ '%.1f' % ((custo / custo_total) * 100) }}%</td>
+                                      </tr>
+                                  {% endfor %}
+                              </tbody>
+                         </table>
+                    </div>
+                    <div class="col-5">
+                       <canvas id="myPieChart" width="200" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        var ctx = document.getElementById('myPieChart').getContext('2d');
+        var myPieChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: [{% for etapa, custo in custo_etapa.items() %}"{{ etapa.capitalize() }}",{% endfor %}],
+                datasets: [{
+                    data: [{% for etapa, custo in custo_etapa.items() %}{{ '%.1f'|format((custo / custo_total) * 100) }}{% if not loop.last %},{% endif %}{% endfor %}],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
+    </script>
+
+{% endblock %}

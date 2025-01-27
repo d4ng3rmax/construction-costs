@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="col out-sidebar">
+        <div class="card">
+            <div class="card-header card-header-padrao">
+                <div class="card-titulo-padrao">
+                    Fluxo de Caixa Mensal
+                </div>
+            </div>
+            <div class="card-body">
+                {% if usuario.plano == "Básico" %}
+                    <div class="plano-invalido">
+                        Seu plano atual não permite o acesso a esse relatório!
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <table class="table mb-5" id="tabelaCustos">
+                            <thead>
+                                <tr>
+                                    <th>Mês</th>
+                                    <th>Custo Mensal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for mes, custo in custos_mensais %}
+                                    <tr>
+                                        <td>{{ mes }}</td>
+                                        <td>{{ "{:,.2f}".format(custo).replace(",", ";").replace(".", ",").replace(";", ".") }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-8 mx-auto mt-2">
+                            <canvas id="graficoCustos" width="150" height="60"></canvas>
+                        </div>
+                    </div>
+
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        var custos_mensais = JSON.parse('{{ custos_mensais | tojson | safe }}');
+
+        var meses = custos_mensais.map(function(item) {
+            return item[0];
+        });
+
+        var custos = custos_mensais.map(function(item) {
+            return item[1];
+        });
+
+        var ctx = document.getElementById('graficoCustos').getContext('2d');
+
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: meses,
+                datasets: [{
+                    label: 'Custo Mensal',
+                    data: custos,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+
+{% endblock %}

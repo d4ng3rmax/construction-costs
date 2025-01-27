@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="col out-sidebar mt-3">
+        <div class="card">
+            <div class="card-body">
+                <div class="perfil-topo">
+                    <img src="{{ url_for('static', filename='images/foto_perfil.png') }}" alt="excluir">
+                    <div class="">{{ usuario.email }}</div>
+                </div>
+                <hr>
+                <div class="row">
+                    <div class="col-7">
+                        <form method="POST" action="" class="border p-4 pe-5 mt-2 login-form">
+                            {{ form_alterar_senha.csrf_token }}
+                            <div class="alterarsenha-titulo">Alterar Senha</div>
+                            <fieldset>
+                                <div class="form-group mt-3">
+                                    {{ form_alterar_senha.senha.label(class="form-control-label alterarsenha-label") }}
+                                    {% if form_alterar_senha.senha.errors %}
+                                        {{ form_alterar_senha.senha(class="form-control is-invalid mt-2") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in form_alterar_senha.senha_login.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{ form_alterar_senha.senha(class="form-control mt-2") }}
+                                    {% endif %}
+                                </div>
+                                <div class="form-group mt-3">
+                                    {{ form_alterar_senha.confirmar_senha.label(class="form-control-label alterarsenha-label") }}
+                                    {% if form_alterar_senha.confirmar_senha.errors %}
+                                        {{ form_alterar_senha.confirmar_senha(class="form-control is-invalid mt-2") }}
+                                    <div class="invalid-feedback">
+                                        {% for erro in form_alterar_senha.confirmar_senha.errors %}
+                                            {{ erro }}
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        {{ form_alterar_senha.confirmar_senha(class="form-control mt-2") }}
+                                    {% endif %}
+                                </div>
+                            </fieldset>
+                            {{ form_alterar_senha.botao(class="btn recuperar-btn mt-4") }}
+                        </form>
+                    </div>
+                    <div class="col-4 mt-2 ms-3">
+                        {% if usuario.plano == "Básico" %}
+                            <div class="perfil-plano-basico">
+                                Plano {{ usuario.plano }}<hr>
+                            </div>
+                            <span style="font-weight: bold; color: brown;">
+                                Utilize mais recursos da nossa plataforma<br>
+                                Evolua sua gestão!
+                            </span>
+                            <div class="text-center">
+                                <a href="{{ url_for('alterarplano') }}">
+                                    <button class="alterar-plano-btn">Alterar meu Plano</button>
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% if usuario.plano == "Avançado" %}
+                            <div class="perfil-plano-avancado">
+                                Plano {{ usuario.plano }}<hr>
+                            </div>
+                            <span style="font-weight: bold; color: #FF4500;">
+                                Utilize os recursos da plataforma de forma ilimitada!<br>
+                                Evolua sua gestão!
+                            </span>
+                            <div class="text-center">
+                                <a href="{{ url_for('alterarplano') }}">
+                                    <button class="alterar-plano-btn">Alterar meu Plano</button>
+                                </a>
+                            </div>
+                        {% endif %}
+                        {% if usuario.plano == "Premium" %}
+                            <div class="perfil-plano-premium">
+                                Plano {{ usuario.plano }}<hr>
+                            </div>
+                            <span style="font-weight: bold; color: blue;">
+                                Você pode usar todos os recursos da nossa plataforma de forma ilimitada!<br>
+                                Aproveite!
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="col out-sidebar">
+        <div class="card">
+            <div class="card-header card-header-padrao">
+                <div class="card-titulo-padrao">
+                    Serviços
+                </div>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="" id="EtapasForm" class="col-md-3">
+                    {{ form_servicos.csrf_token }}
+                    <div class="form-group mt-2">
+                        {{ form_servicos.nome.label(class="form-control-label") }}
+                        {% if form_servicos.nome.errors %}
+                            {{ form_servicos.nome(class="form-control is-invalid", id="input_nome") }}
+                            <div class="invalid-feedback">
+                                {% for erro in form_servicos.nome.errors %}
+                                    {{ erro }}
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form_servicos.nome(class="form-control", id="input_nome") }}
+                        {% endif %}
+                    </div>
+                    {{ form_servicos.botao(class="btn btn-form1 mt-3") }}
+                </form>
+
+                <hr>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nome</th>
+                            <th scope="col"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for servico in usuario.servicos|sort(attribute='nome') %}
+                            <tr>
+                                <td>{{ servico.nome.capitalize() }}</td>
+                                <td style="width: 300px;">
+                                    <button type="button" class="btn"
+                                            onclick="window.location='{{ url_for('servicoseditar', servico_id=servico.id) }}'">
+                                        <img src="{{ url_for('static', filename='images/editar_24.png') }}" alt="excluir">
+                                    </button>
+                                    <form action="{{ url_for('servicos') }}" method="POST" style="display: inline;" onsubmit="return confirmAndDisableButton(this, '{{ servico.nome }}');">
+                                        <input type="hidden" name="servico_id" value="{{ servico.id }}">
+                                        <input type="hidden" name="action" value="excluir">
+                                        <button type="submit" class="btn">
+                                            <img src="{{ url_for('static', filename='images/excluir_24.png') }}" alt="excluir">
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        function confirmAndDisableButton(form, servicoNome) {
+            if (!form.hasAttribute('data-submitted')) {
+                if (confirm('Tem certeza que deseja excluir o servico "' + servicoNome + '"?')) {
+                    var button = form.querySelector('button[type="submit"]');
+                    button.disabled = true;
+                    form.setAttribute('data-submitted', 'true');
+                    return true;
+                }
+                return false;
+            }
+            return false;
+        }
+    </script>
+
+    <script>
+        // Função para focar no campo do formulário
+        window.onload = function() {
+            document.getElementById("input_nome").focus();
+        };
+    </script>
+{% endblock %}
