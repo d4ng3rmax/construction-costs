@@ -1,6 +1,38 @@
+# Diretórios e arquivos Python
 __pycache__/
-*.pyc
-*.db
-instance/
-.env
+*.py[cod]
+*.pyo
+*.pyd
+
+# Logs e bancos de dados locais
 *.log
+*.sqlite3
+*.db
+
+# Configuração de ambiente
+.env
+*.env
+
+# Instalação do sistema
+*.bak
+*.swp
+
+# Diretórios Flask
+instance/
+instance/*
+!instance/config.py
+
+# Migrations do Flask-Migrate
+migrations/
+migrations/versions/
+
+# Arquivos de cache do Flask
+*.cache
+
+# Configurações do IDE
+.vscode/
+.idea/
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
