@@ -1,0 +1,296 @@
+/* ===========================
+   GLOBAL STYLES
+=========================== */
+body {
+   background-color: #f8f8ff;
+   padding-top: 6.3em;
+   font-family: "Bookman Old Style", serif;
+}
+
+.section {
+   position: relative;
+   height: 100vh;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+   font-size: 1.8em;
+   overflow: hidden;
+}
+
+/* ===========================
+   INICIO SECTION
+=========================== */
+.inicio-section {
+   position: relative;
+   text-align: center;
+   padding: 100px 0;
+}
+
+.inicio-titulo {
+   color: #ff4500;
+   font-size: 3em;
+   font-weight: bold;
+}
+
+.inicio-subtitulo {
+   font-size: 1em;
+}
+
+.background-image img {
+   width: 100%;
+   height: auto;
+   position: absolute;
+   top: 0;
+   left: 0;
+}
+
+.inicio-content {
+   position: relative;
+   z-index: 2;
+   text-align: center;
+   padding: 100px 0;
+}
+
+.inicio-btn {
+   display: inline-block;
+   padding: 5px 40px;
+   font-size: 1em;
+   text-align: center;
+   text-decoration: none;
+   background-color: #008b8b;
+   color: #ffffff;
+   border-radius: 12px;
+   transition: background-color 0.3s ease;
+}
+
+.inicio-btn:hover {
+   color: #ffffff;
+   background-color: #006666;
+}
+
+/* ===========================
+   NAVBAR
+=========================== */
+.navbar {
+   background-color: #f8f9fa;
+}
+
+.navbar .nav-link {
+   color: #333;
+}
+
+.navbar .nav-link:hover {
+   color: #0056b3;
+}
+
+.navbar .text-muted {
+   font-size: 0.9rem;
+   font-weight: bold;
+   margin-left: 1rem;
+}
+
+.navbar-brand {
+   font-size: 2em;
+   margin-left: 3em;
+   margin-right: 2.5em;
+}
+
+.navbar-nav .nav-item a {
+   color: #008b8b !important;
+   font-size: 1.15em;
+   margin-left: 1.5em;
+}
+
+.nav-logged {
+   margin-left: auto;
+}
+
+/* ===========================
+   LOGIN FORM
+=========================== */
+.login-form {
+   background-color: #ffffff;
+}
+
+.login-titulo {
+   color: #ff4500;
+   font-size: 1.5em;
+   font-weight: bold;
+}
+
+.login-label {
+   font-size: 1.1em;
+   font-weight: bold;
+   margin-top: 1em;
+}
+
+.login-btn,
+.recuperar-btn {
+   display: inline-block;
+   padding: 0.5em 2.5em;
+   font-size: 1.2em;
+   text-align: center;
+   text-decoration: none;
+   background-color: #008b8b;
+   color: #ffffff;
+   border-radius: 1em;
+   transition: background-color 0.3s ease;
+}
+
+.login-btn:hover,
+.recuperar-btn:hover {
+   color: #ffffff;
+   background-color: #006666;
+}
+
+/* ===========================
+   FLASH MESSAGES
+=========================== */
+.flashauth {
+   margin-left: 15em;
+}
+
+/* ===========================
+   SIDEBAR
+=========================== */
+.sidebar {
+   width: 15em;
+   position: fixed;
+   top: 5em;
+   left: 0;
+   padding-top: 1.2em;
+   z-index: 1;
+   overflow-y: auto;
+   max-height: calc(100vh - 5em);
+}
+
+.sidebar::-webkit-scrollbar {
+   width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+   background-color: transparent;
+}
+
+.item-side a {
+   display: block;
+   text-decoration: none;
+   color: inherit;
+}
+
+.item-side-title {
+   color: #ffffff;
+   background-color: #008b8b;
+   font-size: 1.1em;
+   font-weight: bold;
+}
+
+/* ===========================
+   CARDS
+=========================== */
+.card-header-padrao {
+   background-color: #5f9ea0;
+   font-size: 1.1em;
+   padding-left: 0.8em;
+}
+
+.card-titulo-padrao {
+   font-size: 2em;
+   color: #ffffff;
+   font-weight: bold;
+}
+
+.card-subtitulo-padrao {
+   color: #98fb98;
+}
+
+.card-subtitulo-padrao a {
+   color: inherit;
+}
+
+.borda-planos,
+.borda-lanc {
+   margin-top: 0.4em;
+   padding: 0.5em;
+   border: 1px solid grey;
+   border-radius: 8px;
+   background-color: #edfaf9;
+}
+
+/* ===========================
+   TABLES
+=========================== */
+.table-resumo {
+   margin-top: 15px;
+   font-size: 1.2em;
+   border: ridge 5px #ff4500;
+}
+
+.table-resumo th,
+.table-resumo td {
+   border: none;
+   text-align: center;
+}
+
+.resumo-total {
+   font-size: 1.3em;
+   color: white;
+   background-color: #008b8b;
+}
+
+.resumo-metro {
+   color: white;
+   background-color: #5f9ea0;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+.btn-form1,
+.alterar-plano-btn,
+.alterar-planos-btn {
+   display: inline-block;
+   padding: 0.5em 1em;
+   text-align: center;
+   text-decoration: none;
+   background-color: #008b8b;
+   color: #ffffff !important;
+   border-radius: 12px;
+   transition: background-color 0.3s ease;
+}
+
+.btn-form1:hover,
+.alterar-plano-btn:hover,
+.alterar-planos-btn:hover {
+   background-color: #006666;
+   color: #ffffff;
+}
+
+/* ===========================
+   PROFILE STYLES
+=========================== */
+.perfil-topo {
+   text-align: center;
+   padding: 0.5em;
+}
+
+.perfil-plano-basico {
+   font-weight: bold;
+   font-size: 1.3em;
+   padding: 1em;
+}
+
+.perfil-plano-avancado {
+   color: #008b8b;
+   font-weight: bold;
+   font-size: 1.3em;
+   padding: 1em;
+}
+
+.perfil-plano-premium {
+   color: #ff4500;
+   font-weight: bold;
+   font-size: 1.3em;
+   padding: 1em;
+}
