@@ -1,17 +1,12 @@
 <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-   <!-- Sidebar - Brand -->
+   <!-- Menu vertical -->
    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{ url_for('dashboard') }}">
-      <div class="sidebar-brand-icon rotate-n-15">
-         <i class="fas fa-laugh-wink"></i>
-      </div>
-      <div class="sidebar-brand-text mx-3">Custos de Obra</div>
+      <img class="img-profile" src="{{ url_for('static', filename='images/logo_vetor.svg') }}">
    </a>
 
-   <!-- Divider -->
    <hr class="sidebar-divider my-0">
 
-   <!-- Dashboard -->
    <li class="nav-item active">
       <a class="nav-link" href="{{ url_for('dashboard') }}">
          <i class="fas fa-fw fa-tachometer-alt"></i>
@@ -19,10 +14,9 @@
       </a>
    </li>
 
-   <!-- Divider -->
    <hr class="sidebar-divider">
 
-   <!-- CADASTROS -->
+   <!-- Cadastros -->
    <div class="sidebar-heading">Cadastros</div>
 
    <li class="nav-item">
@@ -74,10 +68,9 @@
       </a>
    </li>
 
-   <!-- Divider -->
    <hr class="sidebar-divider">
 
-   <!-- LANÇAMENTOS -->
+   <!-- Lançamentos -->
    <div class="sidebar-heading">Lançamentos</div>
 
    <li class="nav-item">
@@ -101,10 +94,9 @@
       </a>
    </li>
 
-   <!-- Divider -->
    <hr class="sidebar-divider">
 
-   <!-- RELATÓRIOS -->
+   <!-- Relatórios -->
    <div class="sidebar-heading">Relatórios</div>
 
    <li class="nav-item">
@@ -142,7 +134,6 @@
       </a>
    </li>
 
-   <!-- Divider -->
    <hr class="sidebar-divider d-none d-md-block">
 
    <div class="text-center d-none d-md-inline">
