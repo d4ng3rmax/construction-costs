@@ -23,7 +23,11 @@
                {{ form_editar_materiais.nome(class="form-control") }}
                {% endif %}
             </div>
-            {{ form_editar_materiais.botao(class="btn btn-primary btn-form1 mt-3") }}
+
+            <div class="col-md-12 d-flex justify-content-end align-items-center mt-3">
+               {{ form_editar_materiais.botao(class="btn btn-primary") }}
+               <a href="{{ url_for('materiais') }}" class="btn btn-secondary ml-2">Cancelar</a>
+            </div>
          </form>
 
          <hr>

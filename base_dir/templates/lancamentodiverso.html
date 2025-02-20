@@ -1,215 +1,218 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div class="col out-sidebar">
-        <div class="card">
-            <div class="card-header card-header-padrao">
-                <div class="card-titulo-padrao">
-                    Lançamento de Custo - Diversos
-                </div>
-                <div class="card-subtitulo-padrao">
-                        <a href="{{ url_for('obras', prev_page='lancamentodiversos') }}">
-                        {% if obra_selecionada %}
-                            Obra Selecionada: {{ obra_selecionada.nome.capitalize() }}
-                        {% else %}
-                            Nenhuma obra foi selecionada!
-                        {% endif %}
-                    </a>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="row mb-4">
-                    <form method="POST" action="" id="LancamentodiversoForm" class="">
-                        {{ form_lancamento_diverso.csrf_token }}
-                        <div class="borda-lanc col-8">
-                            <div class="row">
-                                <div class="form-group col-3">
-                                    {{ form_lancamento_diverso.data_lancamento.label(class="form-control-label") }}
-                                    {% if form_lancamento_diverso.data_lancamento.errors %}
-                                        {{ form_lancamento_diverso.data_lancamento(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_lancamento_diverso.data_lancamento.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_lancamento_diverso.data_lancamento(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                            </div>
-                            <div class="row">
-                                <div class="form-group mt-2 col-7">
-                                {{ form_lancamento_diverso.diverso_id.label(class="form-control-label") }}
-                                {% if form_lancamento_diverso.diverso_id.errors %}
-                                    {{ form_lancamento_diverso.diverso_id(class="form-control is-invalid") }}
-                                    <div class="invalid-feedback">
-                                        {% for erro in form_lancamento_diverso.diverso_id.errors %}
-                                            {{ erro }}
-                                        {% endfor %}
-                                    </div>
-                                {% else %}
-                                    {{ form_lancamento_diverso.diverso_id(class="form-control") }}
-                                {% endif %}
-                            </div>
-                                <div class="form-group mt-2 col-2">
-                                    {{ form_lancamento_diverso.quantidade.label(class="form-control-label") }}
-                                    {% if form_lancamento_diverso.quantidade.errors %}
-                                        {{ form_lancamento_diverso.quantidade(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_lancamento_diverso.quantidade.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_lancamento_diverso.quantidade(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                                <div class="form-group mt-2 col-3">
-                                    {{ form_lancamento_diverso.preco_unitario.label(class="form-control-label") }}
-                                    {% if form_lancamento_diverso.preco_unitario.errors %}
-                                        {{ form_lancamento_diverso.preco_unitario(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_lancamento_diverso.preco_unitario.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_lancamento_diverso.preco_unitario(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="card-subtitulo-padrao">
-                                {% if obra_selecionada %}
-                                    {{ form_lancamento_diverso.adicionar_item(class="btn btn-form1 mt-3") }}
-                                {% else %}
-                                    {{ form_lancamento_diverso.adicionar_item(class="btn btn-form2 mt-3", disabled=True) }}
-                                {% endif %}
-                            </div>
+<div class="col out-sidebar">
+   <div class="card">
+      <div class="card-header card-header-padrao">
+         <div class="card-titulo-padrao">
+            Lançamento de Custo - Diversos
+         </div>
+         <div class="card-subtitulo-padrao">
+            <a href="{{ url_for('obras', prev_page='lancamentodiversos') }}">
+               {% if obra_selecionada %}
+               Obra Selecionada: {{ obra_selecionada.nome.capitalize() }}
+               {% else %}
+               Nenhuma obra foi selecionada!
+               {% endif %}
+            </a>
+         </div>
+      </div>
+      <div class="card-body">
+         <div class="row mb-4">
+            <form method="POST" action="" id="LancamentodiversoForm" class="">
+               {{ form_lancamento_diverso.csrf_token }}
+               <div class="borda-lanc col-8">
+                  <div class="row">
+                     <div class="form-group col-3">
+                        {{ form_lancamento_diverso.data_lancamento.label(class="form-control-label") }}
+                        {% if form_lancamento_diverso.data_lancamento.errors %}
+                        {{ form_lancamento_diverso.data_lancamento(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_lancamento_diverso.data_lancamento.errors %}
+                           {{ erro }}
+                           {% endfor %}
                         </div>
-                    </form>
-                </div>
-                <div class="row">
-                    <hr>
-                    <table class="table" id="myDataTable">
-                        <thead>
-                            <tr>
-                                <th class="col-lanc" scope="col">Data</th>
-                                <th class="col-lanc" scope="col">Custo Diverso</th>
-                                <th class="col-lanc" scope="col">Quantidade</th>
-                                <th class="col-lanc" scope="col">Preço Unit</th>
-                                <th class="col-lanc" scope="col">Valor Total</th>
-                                <th class="col-lanc" scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for lancamento in obra_selecionada.lancamentos_diverso %}
-                                <tr>
-                                    <td class="col-lanc-diversos">{{ lancamento.data_lancamento.strftime('%d/%m/%Y') }}</td>
-                                    <td class="col-lanc-diversos">{{ lancamento.diverso.nome.capitalize() }}</td>
-                                    <td class="col-lanc-diversos">{{ lancamento.quantidade }}</td>
-                                    <td class="col-lanc-diversos">
-                                        {{ "{:,.2f}".format(lancamento.preco_unit).replace(",", ";").replace(".", ",").replace(";", ".") }}
-                                    </td>
-                                    <td class="col-lanc-diversos">
-                                        {{ "{:,.2f}".format(lancamento.quantidade * lancamento.preco_unit).replace(",", ";").replace(".", ",").replace(";", ".") }}
-                                    </td>
-                                    <td class="col-lanc-acoes-diversos">
-                                        <button type="button" class="btn"
-                                                onclick="window.location='{{ url_for('lancamentodiversoseditar', lancamentodiversos_id=lancamento.id) }}'">
-                                            <img src="{{ url_for('static', filename='images/editar_24.png') }}" alt="editar">
-                                        </button>
-                                        <form action="{{ url_for('lancamentodiversos') }}" method="POST" style="display: inline;" onsubmit="return confirmAndDisableButton(this);">
-                                            <input type="hidden" name="lancamento_id" value="{{ lancamento.id }}">
-                                            <input type="hidden" name="action" value="excluir">
-                                            <button type="submit" class="btn">
-                                                <img src="{{ url_for('static', filename='images/excluir_24.png') }}" alt="excluir">
-                                            </button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+                        {% else %}
+                        {{ form_lancamento_diverso.data_lancamento(class="form-control") }}
+                        {% endif %}
+                     </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                  </div>
+                  <div class="row">
+                     <div class="form-group mt-2 col-7">
+                        {{ form_lancamento_diverso.diverso_id.label(class="form-control-label") }}
+                        {% if form_lancamento_diverso.diverso_id.errors %}
+                        {{ form_lancamento_diverso.diverso_id(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_lancamento_diverso.diverso_id.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_lancamento_diverso.diverso_id(class="form-control") }}
+                        {% endif %}
+                     </div>
+                     <div class="form-group mt-2 col-2">
+                        {{ form_lancamento_diverso.quantidade.label(class="form-control-label") }}
+                        {% if form_lancamento_diverso.quantidade.errors %}
+                        {{ form_lancamento_diverso.quantidade(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_lancamento_diverso.quantidade.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_lancamento_diverso.quantidade(class="form-control") }}
+                        {% endif %}
+                     </div>
+                     <div class="form-group mt-2 col-3">
+                        {{ form_lancamento_diverso.preco_unitario.label(class="form-control-label") }}
+                        {% if form_lancamento_diverso.preco_unitario.errors %}
+                        {{ form_lancamento_diverso.preco_unitario(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_lancamento_diverso.preco_unitario.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_lancamento_diverso.preco_unitario(class="form-control") }}
+                        {% endif %}
+                     </div>
+                  </div>
+                  <div class="card-subtitulo-padrao">
+                     {% if obra_selecionada %}
+                     {{ form_lancamento_diverso.adicionar_item(class="btn btn-primary mt-3") }}
+                     {% else %}
+                     {{ form_lancamento_diverso.adicionar_item(class="btn btn-primary mt-3", disabled=True) }}
+                     {% endif %}
+                  </div>
+               </div>
+            </form>
+         </div>
+         <div class="row">
+            <hr>
+            <table class="table" id="myDataTable">
+               <thead>
+                  <tr>
+                     <th class="col-lanc" scope="col">Data</th>
+                     <th class="col-lanc" scope="col">Custo Diverso</th>
+                     <th class="col-lanc" scope="col">Quantidade</th>
+                     <th class="col-lanc" scope="col">Preço Unit</th>
+                     <th class="col-lanc" scope="col">Valor Total</th>
+                     <th class="col-lanc" scope="col"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for lancamento in obra_selecionada.lancamentos_diverso %}
+                  <tr>
+                     <td class="col-lanc-diversos">{{ lancamento.data_lancamento.strftime('%d/%m/%Y') }}</td>
+                     <td class="col-lanc-diversos">{{ lancamento.diverso.nome.capitalize() }}</td>
+                     <td class="col-lanc-diversos">{{ lancamento.quantidade }}</td>
+                     <td class="col-lanc-diversos">
+                        {{ "{:,.2f}".format(lancamento.preco_unit).replace(",", ";").replace(".", ",").replace(";", ".")
+                        }}
+                     </td>
+                     <td class="col-lanc-diversos">
+                        {{ "{:,.2f}".format(lancamento.quantidade * lancamento.preco_unit).replace(",",
+                        ";").replace(".", ",").replace(";", ".") }}
+                     </td>
+                     <td class="col-lanc-acoes-diversos">
+                        <button type="button" class="btn"
+                           onclick="window.location='{{ url_for('lancamentodiversoseditar', lancamentodiversos_id=lancamento.id) }}'">
+                           <img src="{{ url_for('static', filename='images/editar_24.png') }}" alt="editar">
+                        </button>
+                        <form action="{{ url_for('lancamentodiversos') }}" method="POST" style="display: inline;"
+                           onsubmit="return confirmAndDisableButton(this);">
+                           <input type="hidden" name="lancamento_id" value="{{ lancamento.id }}">
+                           <input type="hidden" name="action" value="excluir">
+                           <button type="submit" class="btn">
+                              <img src="{{ url_for('static', filename='images/excluir_24.png') }}" alt="excluir">
+                           </button>
+                        </form>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            flatpickr("#data_lancamento", {
-                dateFormat: "d/m/Y",
-                enableTime: false,
-                locale: "pt",
-            });
-        });
-    </script>
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+      flatpickr("#data_lancamento", {
+         dateFormat: "d/m/Y",
+         enableTime: false,
+         locale: "pt",
+      });
+   });
+</script>
 
-    <script>
-        function confirmAndDisableButton(form, diversoNome) {
-            if (!form.hasAttribute('data-submitted')) {
-                if (confirm('Tem certeza que deseja excluir o lançamento?')) {
-                    var button = form.querySelector('button[type="submit"]');
-                    button.disabled = true;
-                    form.setAttribute('data-submitted', 'true');
-                    return true;
-                }
-                return false;
-            }
-            return false;
-        }
-    </script>
+<script>
+   function confirmAndDisableButton(form, diversoNome) {
+      if (!form.hasAttribute('data-submitted')) {
+         if (confirm('Tem certeza que deseja excluir o lançamento?')) {
+            var button = form.querySelector('button[type="submit"]');
+            button.disabled = true;
+            form.setAttribute('data-submitted', 'true');
+            return true;
+         }
+         return false;
+      }
+      return false;
+   }
+</script>
 
-    <script>
-        // Função para armazenar a posição da janela antes do envio do formulário
-        function storeScrollPosition() {
-            sessionStorage.setItem('scrollPosition', window.scrollY);
-        }
+<script>
+   // Função para armazenar a posição da janela antes do envio do formulário
+   function storeScrollPosition() {
+      sessionStorage.setItem('scrollPosition', window.scrollY);
+   }
 
-        // Função para restaurar a posição da janela após o envio do formulário
-        function restoreScrollPosition() {
-            const scrollPosition = sessionStorage.getItem('scrollPosition');
-            if (scrollPosition !== null) {
-                window.scrollTo(0, parseInt(scrollPosition));
-            }
-        }
+   // Função para restaurar a posição da janela após o envio do formulário
+   function restoreScrollPosition() {
+      const scrollPosition = sessionStorage.getItem('scrollPosition');
+      if (scrollPosition !== null) {
+         window.scrollTo(0, parseInt(scrollPosition));
+      }
+   }
 
-        // Função a ser chamada após o carregamento da página
-        document.addEventListener('DOMContentLoaded', function () {
-            restoreScrollPosition(); // Restaura a posição da janela
+   // Função a ser chamada após o carregamento da página
+   document.addEventListener('DOMContentLoaded', function () {
+      restoreScrollPosition(); // Restaura a posição da janela
 
-            // Captura o evento de envio do formulário
-            const form = document.getElementById('LancamentodiversoForm');
-            form.addEventListener('submit', function () {
-                storeScrollPosition(); // Armazena a posição da janela antes do envio
-            });
-        });
-    </script>
+      // Captura o evento de envio do formulário
+      const form = document.getElementById('LancamentodiversoForm');
+      form.addEventListener('submit', function () {
+         storeScrollPosition(); // Armazena a posição da janela antes do envio
+      });
+   });
+</script>
 
 
-    <script>
-        $(document).ready(function () {
-            $('#myDataTable').DataTable({
-                "language": {
-                    "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
-                },
-                "columnDefs": [
-                    { "type": "date", targets: [0] }
-                ]
-                //"pageLength": -1,
-                //"lengthChange": false,
-                //"info": false,
-                //"paging": false
-            });
-        });
-    </script>
+<script>
+   $(document).ready(function () {
+      $('#myDataTable').DataTable({
+         "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
+         },
+         "columnDefs": [
+            { "type": "date", targets: [0] }
+         ]
+         //"pageLength": -1,
+         //"lengthChange": false,
+         //"info": false,
+         //"paging": false
+      });
+   });
+</script>
 
-    <script>
-        document.getElementById('limparCampos').addEventListener('click', function() {
-            window.location.href = "{{ url_for('lancamentodiversos') }}";
-        });
-    </script>
+<script>
+   document.getElementById('limparCampos').addEventListener('click', function () {
+      window.location.href = "{{ url_for('lancamentodiversos') }}";
+   });
+</script>
 
 {% endblock %}

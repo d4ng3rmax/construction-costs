@@ -16,6 +16,9 @@
    <!-- Custom styles -->
    <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
 
+   <!-- Flatpickr -->
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
    {% block head %}
    {% endblock %}
 </head>
@@ -41,6 +44,19 @@
 
             <!-- Begin Page Content -->
             <div class="container-fluid">
+               {% with messages = get_flashed_messages(with_categories=true) %}
+               {% if messages %}
+               {% for category, message in messages %}
+               <div class="alert {{ category }} alert-dismissible fade show" role="alert">
+                  {{ message }}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                  </button>
+               </div>
+               {% endfor %}
+               {% endif %}
+               {% endwith %}
+
                {% block body %}
                {% endblock %}
             </div>
@@ -61,6 +77,8 @@
 
    <!-- Bootstrap core JavaScript -->
    <script src="{{ url_for('static', filename='vendor/jquery.min.js') }}"></script>
+   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
    <script src="{{ url_for('static', filename='vendor/bootstrap.bundle.min.js') }}"></script>
 
    <!-- Core plugin JavaScript -->
@@ -68,6 +86,9 @@
 
    <!-- Custom scripts for all pages -->
    <script src="{{ url_for('static', filename='js/sb-admin-2.min.js') }}"></script>
+
+   <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
    {% block scripts %}
    {% endblock %}

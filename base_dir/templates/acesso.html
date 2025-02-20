@@ -1,65 +1,66 @@
 {% extends 'base.html' %}
 {% block body %}
 
-    {% if current_user.is_authenticated %}
-        <script>
-            // Redirecionar usuários autenticados da página de login
-            if ("{{ request.path }}" === "{{ url_for('acesso') }}") {
-                window.location.replace("{{ url_for('dashboard') }}");
-            }
-        </script>
-    {% endif %}
+{% if current_user.is_authenticated %}
+<script>
+   // Redirecionar usuários autenticados da página de login
+   if ("{{ request.path }}" === "{{ url_for('acesso') }}") {
+      window.location.replace("{{ url_for('dashboard') }}");
+   }
+</script>
+{% endif %}
 
-    <div class="container">
-        <div class="row justify-content-center mt-3">
-            <div class="col-md-5">
-                <form method="POST" action="" class="border p-4 pe-5 mt-2 login-form">
-                    {{ form_login.csrf_token }}
-                    <div class="login-titulo">Informe seus dados e faça o login!</div>
-                    <fieldset>
-                        <div class="form-group mt-2">
-                            {{ form_login.email.label(class="form-control-label login-label") }}
-                            {% if form_login.email.errors %}
-                                {{ form_login.email(class="form-control is-invalid mt-2") }}
-                            <div class="invalid-feedback">
-                                {% for erro in form_login.email.errors %}
-                                    {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ form_login.email(class="form-control mt-2") }}
-                            {% endif %}
-                        </div>
-                        <div class="form-group mt-3">
-                            {{ form_login.senha.label(class="form-control-label login-label") }}
-                            {% if form_login.senha.errors %}
-                                {{ form_login.senha(class="form-control is-invalid mt-2") }}
-                            <div class="invalid-feedback">
-                                {% for erro in form_login.senha_login.errors %}
-                                    {{ erro }}
-                                {% endfor %}
-                            </div>
-                            {% else %}
-                                {{ form_login.senha(class="form-control mt-2") }}
-                            {% endif %}
-                        </div>
-                        <div class="form-group mt-4">
-                            {{ form_login.dados.label(class="form-check-input-label") }}
-                            {{ form_login.dados(class="form-check-input") }}
-                        </div>
-                    </fieldset>
-                    {{ form_login.botao(class="btn login-btn mt-4") }}
-                    <div class="mt-4">
-                        Ainda não é cadastrado?
-                        <a class="login-cadastro" href="{{ url_for('cadastro') }}">Cadastre-se</a>
-                    </div>
-                    <div class="mt-2">
-                        Esqueceu sua senha?
-                        <a class="login-recuperar" href="{{ url_for('recuperarsenha') }}">Recuperar senha</a>
-                    </div>
-                </form>
+<div class="container">
+   <div class="row justify-content-center mt-3">
+      <div class="col-md-5">
+         <form method="POST" action="" class="border p-4 pe-5 mt-2 login-form">
+            {{ form_login.csrf_token }}
+            <div class="login-titulo">Informe seus dados e faça o login!</div>
+            <fieldset>
+               <div class="form-group mt-2">
+                  {{ form_login.email.label(class="form-control-label login-label") }}
+                  {% if form_login.email.errors %}
+                  {{ form_login.email(class="form-control is-invalid mt-2") }}
+                  <div class="invalid-feedback">
+                     {% for erro in form_login.email.errors %}
+                     {{ erro }}
+                     {% endfor %}
+                  </div>
+                  {% else %}
+                  {{ form_login.email(class="form-control mt-2") }}
+                  {% endif %}
+               </div>
+               <div class="form-group mt-3">
+                  {{ form_login.senha.label(class="form-control-label login-label") }}
+                  {% if form_login.senha.errors %}
+                  {{ form_login.senha(class="form-control is-invalid mt-2") }}
+                  <div class="invalid-feedback">
+                     {% for erro in form_login.senha_login.errors %}
+                     {{ erro }}
+                     {% endfor %}
+                  </div>
+                  {% else %}
+                  {{ form_login.senha(class="form-control mt-2") }}
+                  {% endif %}
+               </div>
+               <div class="form-group mt-4">
+                  {{ form_login.dados.label(class="form-check-input-label") }}
+                  {{ form_login.dados(class="form-check-input") }}
+               </div>
+            </fieldset>
+            {{ form_login.botao(class="btn btn-primary mr-2 mt-4") }}
+            <a href="{{ url_for('obras') }}" class="btn btn-secondary">Cancelar</a>
+            <div class="mt-4">
+               Ainda não é cadastrado?
+               <a class="login-cadastro" href="{{ url_for('cadastro') }}">Cadastre-se</a>
             </div>
-        </div>
-    </div>
+            <div class="mt-2">
+               Esqueceu sua senha?
+               <a class="login-recuperar" href="{{ url_for('recuperarsenha') }}">Recuperar senha</a>
+            </div>
+         </form>
+      </div>
+   </div>
+</div>
 
 {% endblock %}
