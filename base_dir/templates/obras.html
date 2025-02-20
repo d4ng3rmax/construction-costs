@@ -9,7 +9,21 @@
          <div class="card-subtitulo-padrao">
             <a href="{{ url_for('obras') }}">
                {% if obra_selecionada %}
-               Obra Selecionada: {{ obra_selecionada.nome.capitalize() }}
+               <div style="display: flex; align-items: center; gap: 10px;">
+                  <form method="POST" action="{{ url_for('desselecionar_obra') }}"
+                     style="display: flex; align-items: center; gap: 10px; border: none; background: none;">
+                     <input type="hidden" name="obra_id" value="{{ obra_selecionada.id }}">
+
+                     <button type="submit" class="obra-selecionada-btn" title="Desselecionar Obra">
+                        Obra Selecionada: {{ obra_selecionada.nome.capitalize() }}
+                     </button>
+
+                     <button type="submit" class="btn-exclude" title="Desselecionar Obra">
+                        ✖
+                     </button>
+                  </form>
+
+               </div>
                {% else %}
                Nenhuma obra foi selecionada!
                {% endif %}
@@ -148,39 +162,9 @@
                   </td>
                </tr>
                {% endfor %}
-               <!-- Adicione mais linhas conforme necessário -->
             </tbody>
          </table>
       </div>
    </div>
 </div>
-
-
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
-<script>
-   document.addEventListener('DOMContentLoaded', function () {
-      flatpickr("#data_inicio", {
-         dateFormat: "d/m/Y",
-         enableTime: false,
-         locale: "pt",
-      });
-   });
-</script>
-
-<script>
-   function confirmAndDisableButton(form, etapaNome) {
-      if (!form.hasAttribute('data-submitted')) {
-         if (confirm('Tem certeza que deseja excluir a etapa "' + etapaNome + '"?')) {
-            var button = form.querySelector('button[type="submit"]');
-            button.disabled = true;
-            form.setAttribute('data-submitted', 'true');
-            return true;
-         }
-         return false;
-      }
-      return false;
-   }
-</script>
-
 {% endblock %}

@@ -226,7 +226,8 @@ def obras():
         for n in usuario.obras:
             n_obras += 1
 
-        if usuario.plano == "Básico" and n_obras >= 1:
+        # if usuario.plano == "Básico" and n_obras >= 1:
+        if usuario.plano == "Básico" and n_obras >= 5:
             flash("Limite máximo de obras cadastradas já foi atingido", "alert-danger")
             return redirect(url_for("obras"))
 
@@ -259,16 +260,35 @@ def obras():
         else:
             return redirect(url_for("obras"))
 
+    #  if action == "excluir":
+    #      obra = Obra.query.get(obra_id)
+    #      if obra:
+    #          lancamentos = LancamentoCusto.query.filter_by(obra_id=obra.id)
+    #          if lancamentos:
+    #              for lancamento in lancamentos:
+    #                  db.session.delete(lancamento)
+    #          db.session.delete(obra)
+    #          usuario.obra_selecionada = None
+    #          db.session.commit()
+    #          return redirect(url_for("obras"))
+
     if action == "excluir":
         obra = Obra.query.get(obra_id)
         if obra:
-            lancamentos = LancamentoCusto.query.filter_by(obra_id=obra.id)
-            if lancamentos:
-                for lancamento in lancamentos:
-                    db.session.delete(lancamento)
+            # Deletar os lançamentos da obra antes de excluí-la
+            lancamentos = LancamentoCusto.query.filter_by(obra_id=obra.id).all()
+            for lancamento in lancamentos:
+                db.session.delete(lancamento)
+
+            # Excluir a obra
             db.session.delete(obra)
-            usuario.obra_selecionada = None
+
+            # Desmarcar a obra selecionada apenas se for a mesma que está sendo excluída
+            if usuario.obra_selecionada == obra.id:
+                usuario.obra_selecionada = None
+
             db.session.commit()
+            flash("Obra excluída com sucesso!", "alert-success")
             return redirect(url_for("obras"))
 
     obra_selecionada = Obra.query.filter_by(id=usuario.obra_selecionada).first()
@@ -329,6 +349,17 @@ def obraseditar(obra_id):
     return render_template(
         "obraseditar.html", form_editar_obra=form_editar_obra, usuario=usuario
     )
+
+
+@app.route("/cadastro/obras/desselecionar", methods=["POST"])
+@login_required
+def desselecionar_obra():
+    usuario = current_user
+    usuario.obra_selecionada = None  # Remove a obra selecionada
+    db.session.commit()
+
+    flash("Obra desselecionada com sucesso!", "alert-info")
+    return redirect(url_for("obras"))
 
 
 @app.route("/cadastro/etapas", methods=["GET", "POST"])
