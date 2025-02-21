@@ -7,33 +7,33 @@
 }
 
 .btn-exclude {
-    border: none;
-    color: var(--color-white);
-    border-radius: 50%;
-    width: 20px;
-    height: 20px;
-    font-size: 16px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background-color 0.3s ease;
-    text-decoration: none;
+   border: none;
+   color: var(--color-white);
+   border-radius: 50%;
+   width: 20px;
+   height: 20px;
+   font-size: 16px;
+   cursor: pointer;
+   display: flex;
+   align-items: center;
+   justify-content: center;
+   transition: background-color 0.3s ease;
+   text-decoration: none;
 
-    * {
-        color: inherit;
-        text-decoration: none;
-    }
+   * {
+      color: inherit;
+      text-decoration: none;
+   }
 
-    &:hover {
+   &:hover {
       color: var(--color-white);
       text-decoration: none;
-    }
+   }
 
-    &:focus {
-        outline: none;
-        color: var(--color-white);
-    }
+   &:focus {
+      outline: none;
+      color: var(--color-white);
+   }
 }
 
 .obra-selecionada-btn {
