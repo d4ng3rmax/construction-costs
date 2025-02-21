@@ -937,66 +937,22 @@ def lancamentomateriais():
     usuario = current_user
     obra_selecionada = Obra.query.filter_by(id=usuario.obra_selecionada).first()
 
-    # Preencher campos choices do formulario
-    sorted_fornecedores = sorted(
-        usuario.fornecedores, key=lambda fornecedor: fornecedor.nome
-    )
-    form_lancamento_custo.fornecedor_id.choices = [
-        (fornecedor.id, fornecedor.nome.title()) for fornecedor in sorted_fornecedores
-    ]
+    if not obra_selecionada:
+        flash(
+            "Nenhuma obra foi selecionada. Selecione uma obra para continuar.",
+            "alert-warning",
+        )
+        return redirect(url_for("obras"))
 
-    sorted_etapas = sorted(usuario.etapas, key=lambda etapa: etapa.nome)
-    form_lancamento_custo.etapa_id.choices = (
-        (99999, "Selecione uma etapa..."),
-    ) + tuple((etapa.id, etapa.nome.capitalize()) for etapa in sorted_etapas)
+    page = request.args.get("page", 1, type=int)
+    per_page = 20
 
-    sorted_subetapas = sorted(usuario.subetapas, key=lambda subetapa: subetapa.nome)
-    form_lancamento_custo.subetapa_id.choices = (
-        (99999, "Selecione uma subetapa..."),
-    ) + tuple(
-        (subetapa.id, subetapa.nome.capitalize()) for subetapa in sorted_subetapas
+    lancamentos = LancamentoCusto.query.filter_by(obra_id=obra_selecionada.id).paginate(
+        page=page, per_page=per_page, error_out=False
     )
-
-    sorted_materiais = sorted(
-        usuario.materiais,
-        key=lambda item: (
-            re.sub(r"\d+\.?\d*", "", item.nome).strip().lower(),
-            extract_numerical_part(item.nome),
-        ),
-    )
-    form_lancamento_custo.material_id.choices = [
-        (material.id, material.nome.capitalize()) for material in sorted_materiais
-    ]
 
     if "adicionar_item" in request.form:
         if form_lancamento_custo.validate_on_submit() and request.method == "POST":
-
-            # Verificar o limite de lançamentos
-            n_mat = 0
-            n_ser = 0
-            n_div = 0
-            for n in usuario.obras:
-                for m in n.lancamentos_custo:
-                    n_mat += 1
-                for s in n.lancamentos_servico:
-                    n_ser += 1
-                for d in n.lancamentos_diverso:
-                    n_div += 1
-            n_lanc = n_mat + n_ser + n_div
-
-            if usuario.plano == "Básico" and n_lanc >= 10:
-                flash(
-                    "Limite máximo de lançamentos cadastradas já foi atingido",
-                    "alert-danger",
-                )
-                return redirect(url_for("lancamentomateriais"))
-
-            if usuario.plano == "Avançado" and n_lanc >= 2000:
-                flash(
-                    "Limite máximo de itens lançamentos já foi atingido", "alert-danger"
-                )
-                return redirect(url_for("lancamentomateriais"))
-
             data_lancamento_id = form_lancamento_custo.data_lancamento.data
             fornecedor_lancamento_id = form_lancamento_custo.fornecedor_id.data
             nota_fiscal_lancamento = form_lancamento_custo.nota_fiscal.data
@@ -1042,6 +998,7 @@ def lancamentomateriais():
         form_lancamento_custo=form_lancamento_custo,
         usuario=usuario,
         obra_selecionada=obra_selecionada,
+        lancamentos=lancamentos,
     )
 
 
@@ -1476,6 +1433,14 @@ def lancamentodiversoseditar(lancamentodiversos_id):
 def custoporetapa():
     usuario = current_user
     obra_selecionada = Obra.query.filter_by(id=usuario.obra_selecionada).first()
+
+    if not obra_selecionada:
+        flash(
+            "Nenhuma obra foi selecionada. Selecione uma obra para visualizar o relatório.",
+            "alert-warning",
+        )
+        return redirect(url_for("obras"))
+
     etapas = Etapa.query.filter_by(usuario_id=usuario.id).all()
     custo_etapa = {}
     custo_total = 0
@@ -1503,11 +1468,10 @@ def custoporetapa():
         sorted(custo_etapa.items(), key=lambda item: item[1], reverse=True)
     )
 
-    if custo_total == 0:
-        custo_total = 1
-
     return render_template(
-        "custoporetapa.html", custo_etapa=custo_etapa_ordenado, custo_total=custo_total
+        "custoporetapa.html",
+        custo_etapa=custo_etapa_ordenado,
+        custo_total=custo_total,
     )
 
 
@@ -1516,6 +1480,14 @@ def custoporetapa():
 def custoporsubetapa():
     usuario = current_user
     obra_selecionada = Obra.query.filter_by(id=usuario.obra_selecionada).first()
+
+    if not obra_selecionada:
+        flash(
+            "Nenhuma obra foi selecionada. Selecione uma obra para visualizar o relatório.",
+            "alert-warning",
+        )
+        return redirect(url_for("obras"))
+
     subetapas = Subetapa.query.filter_by(usuario_id=usuario.id).all()
     custo_subetapa = {}
     custo_total = 0
@@ -1543,9 +1515,6 @@ def custoporsubetapa():
         sorted(custo_subetapa.items(), key=lambda item: item[1], reverse=True)
     )
 
-    if custo_total == 0:
-        custo_total = 1
-
     return render_template(
         "custoporsubetapa.html",
         custo_subetapa=custo_subetapa_ordenado,
@@ -1558,6 +1527,14 @@ def custoporsubetapa():
 def quantitativo():
     usuario = current_user
     obra_selecionada = Obra.query.filter_by(id=usuario.obra_selecionada).first()
+
+    if not obra_selecionada:
+        flash(
+            "Nenhuma obra foi selecionada. Selecione uma obra para visualizar o relatório.",
+            "alert-warning",
+        )
+        return redirect(url_for("obras"))
+
     materiais = Materiais.query.filter_by(usuario_id=usuario.id).all()
     servicos = Servicos.query.filter_by(usuario_id=usuario.id).all()
     qtd_material = {}

@@ -64,6 +64,7 @@
                </form>
             </div>
 
+            <!-- Tabela de lançamentos -->
             <div class="table-responsive w-100 mt-5">
                <table class="table table-striped w-100" id="myDataTable">
                   <thead>
@@ -81,7 +82,7 @@
                      </tr>
                   </thead>
                   <tbody>
-                     {% for lancamento in obra_selecionada.lancamentos_custo %}
+                     {% for lancamento in lancamentos.items %}
                      <tr>
                         <td>{{ lancamento.data_lancamento.strftime('%d/%m/%Y') }}</td>
                         <td>{{ lancamento.fornecedor.nome.capitalize() }}</td>
@@ -112,6 +113,28 @@
                   </tbody>
                </table>
             </div>
+
+            <!-- Paginação -->
+            <div class="d-flex justify-content-between mt-3">
+               {% if lancamentos.has_prev %}
+               <a href="{{ url_for('lancamentomateriais', page=lancamentos.prev_num) }}" class="btn btn-secondary">
+                  Anterior
+               </a>
+               {% else %}
+               <span></span>
+               {% endif %}
+
+               <span>Página {{ lancamentos.page }} de {{ lancamentos.pages }}</span>
+
+               {% if lancamentos.has_next %}
+               <a href="{{ url_for('lancamentomateriais', page=lancamentos.next_num) }}" class="btn btn-secondary">
+                  Próxima
+               </a>
+               {% else %}
+               <span></span>
+               {% endif %}
+            </div>
+
          </div>
       </div>
    </div>
@@ -134,18 +157,6 @@
          console.error("DataTables não foi carregado corretamente.");
       }
    });
-
-   document.addEventListener("DOMContentLoaded", function () {
-      const limparCamposBtn = document.getElementById('limparCampos');
-      if (limparCamposBtn) {
-         limparCamposBtn.addEventListener('click', function () {
-            window.location.href = "{{ url_for('lancamentomateriais') }}";
-         });
-      } else {
-         console.warn("O botão 'limparCampos' não foi encontrado.");
-      }
-   });
-
 </script>
 
 {% endblock %}
