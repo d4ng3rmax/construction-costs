@@ -548,55 +548,49 @@ def materiais():
     usuario = current_user
 
     if form_materiais.validate_on_submit():
-        material_nome = form_materiais.nome.data
-        material_nome = material_nome.lower()
-        material = Materiais(nome=material_nome, usuario=usuario)
-
-        # Verificar limite de materiais
-        n_materiais = 0
-        for n in usuario.materiais:
-            n_materiais += 1
-
-        if usuario.plano == "Básico" and n_materiais >= 10:
-            flash(
-                "Limite máximo de materiais cadastradas já foi atingido", "alert-danger"
-            )
-            return redirect(url_for("materiais"))
-
-        if usuario.plano == "Avançado" and n_materiais >= 250:
-            flash(
-                "Limite máximo de materiais cadastradas já foi atingido", "alert-danger"
-            )
-            return redirect(url_for("materiais"))
+        material_nome = form_materiais.nome.data.strip().lower()
 
         # Verificar duplicidade
         material_existente = Materiais.query.filter_by(nome=material_nome).first()
         if material_existente:
-            flash("Já existe um material com esse nome", "alert-danger")
-            return render_template(
-                "materiais.html", form_materiais=form_materiais, usuario=usuario
-            )
+            flash("Já existe um material com esse nome!", "alert-danger")
+            return redirect(url_for("materiais"))
 
-        usuario.materiais.append(material)
+        # Verificar limite de materiais antes de adicionar um novo
+        n_materiais = len(usuario.materiais)
+        limite_materiais = 10 if usuario.plano == "Básico" else 250
+
+        if n_materiais >= limite_materiais:
+            flash(
+                "Limite máximo de materiais cadastrados já foi atingido!",
+                "alert-danger",
+            )
+            return redirect(url_for("materiais"))  # 🔄 Garante a atualização da lista
+
+        # Criar novo material
+        novo_material = Materiais(nome=material_nome, usuario=usuario)
+        db.session.add(novo_material)
         db.session.commit()
-        return redirect(url_for("materiais"))
+        flash("Material cadastrado com sucesso!", "alert-success")
+
+        return redirect(
+            url_for("materiais")
+        )  # 🔄 Redirecionamento para atualizar a lista
+
+    # 🔄 Carregar lista de materiais corretamente
+    materiais_ordenados = sorted(usuario.materiais, key=lambda item: item.nome.lower())
 
     material_id = request.form.get("material_id")
     action = request.form.get("action")
+
+    # Excluir material, se solicitado
     if action == "excluir":
         material = Materiais.query.get(material_id)
         if material:
             db.session.delete(material)
             db.session.commit()
-            return redirect(url_for("materiais"))
-
-    materiais_ordenados = sorted(
-        usuario.materiais,
-        key=lambda item: (
-            re.sub(r"\d+\.?\d*", "", item.nome).strip().lower(),
-            extract_numerical_part(item.nome),
-        ),
-    )
+            flash("Material excluído com sucesso!", "alert-success")
+            return redirect(url_for("materiais"))  # 🔄 Atualiza a lista após a exclusão
 
     return render_template(
         "materiais.html",
@@ -933,10 +927,11 @@ def obter_subetapas_por_etapa():
 @app.route("/lancamento/materiais", methods=["GET", "POST"])
 @login_required
 def lancamentomateriais():
-    form_lancamento_custo = FormLancamentoCusto()
+    form_nf = FormNotaFiscal()
     usuario = current_user
     obra_selecionada = Obra.query.filter_by(id=usuario.obra_selecionada).first()
 
+    # 🚨 Verifica se o usuário selecionou uma obra antes de continuar
     if not obra_selecionada:
         flash(
             "Nenhuma obra foi selecionada. Selecione uma obra para continuar.",
@@ -944,45 +939,54 @@ def lancamentomateriais():
         )
         return redirect(url_for("obras"))
 
+    # Paginação para os lançamentos existentes
     page = request.args.get("page", 1, type=int)
     per_page = 20
-
     lancamentos = LancamentoCusto.query.filter_by(obra_id=obra_selecionada.id).paginate(
         page=page, per_page=per_page, error_out=False
     )
 
-    if "adicionar_item" in request.form:
-        if form_lancamento_custo.validate_on_submit() and request.method == "POST":
-            data_lancamento_id = form_lancamento_custo.data_lancamento.data
-            fornecedor_lancamento_id = form_lancamento_custo.fornecedor_id.data
-            nota_fiscal_lancamento = form_lancamento_custo.nota_fiscal.data
-            etapa_lancamento_id = form_lancamento_custo.etapa_id.data
-            subetapa_lancamento_id = form_lancamento_custo.subetapa_id.data
-            material_lancamento_id = form_lancamento_custo.material_id.data
-            quantidade_lancamento = form_lancamento_custo.quantidade.data
-            preco_unitario_lancamento = form_lancamento_custo.preco_unitario.data
+    # 🚨 Se o usuário confirmar a Nota Fiscal, adicionamos os materiais de uma vez
+    if form_nf.validate_on_submit() and form_nf.confirmar_nf.data:
+        total_nf = sum(
+            item["quantidade"] * item["preco_unitario"] for item in form_nf.itens.data
+        )
+        entrada = float(request.form.get("entrada", 0))
+        parcelas = int(request.form.get("parcelas", 1))
 
-            data_lancamento = datetime.strptime(data_lancamento_id, "%d/%m/%Y")
-
-            lancamento = LancamentoCusto(
-                data_lancamento=data_lancamento,
-                nota_fiscal=nota_fiscal_lancamento,
-                quantidade=quantidade_lancamento,
-                preco_unit=preco_unitario_lancamento,
-                material_id=material_lancamento_id,
-                fornecedor_id=fornecedor_lancamento_id,
-                etapa_id=etapa_lancamento_id,
-                subetapa_id=subetapa_lancamento_id,
+        # Criar lançamentos para cada material informado
+        for item in form_nf.itens.data:
+            novo_lancamento = LancamentoCusto(
+                data_lancamento=form_nf.data_lancamento.data,
+                nota_fiscal=form_nf.nota_fiscal.data,
+                fornecedor_id=form_nf.fornecedor_id.data,
                 obra_id=obra_selecionada.id,
+                etapa_id=item["etapa_id"],
+                subetapa_id=item["subetapa_id"],
+                material_id=item["material_id"],
+                quantidade=item["quantidade"],
+                preco_unit=item["preco_unitario"],
             )
+            db.session.add(novo_lancamento)
 
-            obra_selecionada.lancamentos_custo.append(lancamento)
-            db.session.commit()
+        # 🚨 Geração automática das contas a pagar
+        valor_parcela = (total_nf - entrada) / parcelas
+        for i in range(parcelas):
+            vencimento = datetime.strptime(
+                form_nf.data_lancamento.data, "%d/%m/%Y"
+            ) + relativedelta(months=i)
+            nova_conta = ContasPagar(
+                data_vencimento=vencimento,
+                valor=valor_parcela,
+                nota_fiscal=form_nf.nota_fiscal.data,
+            )
+            db.session.add(nova_conta)
 
-            # Zerar campos
-            form_lancamento_custo.material_id.data = ""
-            form_lancamento_custo.quantidade.data = ""
-            form_lancamento_custo.preco_unitario.data = ""
+        db.session.commit()
+        flash(
+            "Nota Fiscal lançada com sucesso! Contas a pagar geradas.", "alert-success"
+        )
+        return redirect(url_for("lancamentomateriais"))
 
     lancamento_id = request.form.get("lancamento_id")
     action = request.form.get("action")
@@ -991,11 +995,12 @@ def lancamentomateriais():
         if lancamento:
             db.session.delete(lancamento)
             db.session.commit()
+            flash("Lançamento excluído com sucesso!", "alert-success")
             return redirect(url_for("lancamentomateriais"))
 
     return render_template(
         "lancamentocusto.html",
-        form_lancamento_custo=form_lancamento_custo,
+        form_nf=form_nf,
         usuario=usuario,
         obra_selecionada=obra_selecionada,
         lancamentos=lancamentos,
