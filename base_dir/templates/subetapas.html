@@ -1,93 +1,97 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div class="col out-sidebar">
-        <div class="card">
-            <div class="card-header card-header-padrao">
-                <div class="card-titulo-padrao">
-                    Subetapas
-                </div>
+<div class="col out-sidebar">
+    <div class="card">
+        <div class="card-header card-header-padrao">
+            <div class="card-titulo-padrao">
+                Subetapas
             </div>
-            <div class="card-body">
-                <form method="POST" action="" id="subetapasForm" class="col-md-6">
-                    {{ form_subetapas.csrf_token }}
-                    <div class="row">
-                        <div class="form-group mt-2 col-md-6">
-                            {{ form_subetapas.nome.label(class="form-control-label") }}
-                            {% if form_subetapas.nome.errors %}
-                                {{ form_subetapas.nome(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in form_subetapas_obra.nome.errors %}
-                                        {{ erro }}
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                {{ form_subetapas.nome(class="form-control") }}
-                            {% endif %}
-                        </div>
-                        <div class="form-group mt-2 col-md-6">
-                            {{ form_subetapas.etapa_relacionada.label(class="form-control-label") }}
-                            {% if form_subetapas.etapa_relacionada.errors %}
-                                {{ form_subetapas.etapa_relacionada(class="form-control is-invalid") }}
-                                <div class="invalid-feedback">
-                                    {% for erro in form_subetapas_obra.etapa_relacionada.errors %}
-                                        {{ erro }}
-                                    {% endfor %}
-                                </div>
-                            {% else %}
-                                {{ form_subetapas.etapa_relacionada(class="form-control") }}
-                            {% endif %}
-                        </div>
-                    </div>
-                    {{ form_subetapas.botao(class="btn btn-form1 mt-3") }}
-                </form>
-                <hr>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="" id="subetapasForm" class="col-md-6">
+                {{ form_subetapas.csrf_token }}
                 <div class="row">
-                    <div class="col-md-12">
-                        <table class="table">
-                            <tbody>
-                                {% for etapa in usuario.etapas | sort(attribute='nome') %}
-                                    <tr class="etapa">
-                                        <td colspan="3">{{ etapa.nome.capitalize() }}</td>
-                                    </tr>
-                                    {% for subetapa in etapa.subetapas | sort(attribute='nome') %}
-                                        <tr class="subetapa">
-                                            <td></td>
-                                            <td>{{ subetapa.nome.capitalize() }}</td>
-                                            <td>
-                                                <button type="button" class="btn" onclick="window.location='{{ url_for('subetapaseditar', subetapa_id=subetapa.id) }}'">
-                                                    <img src="{{ url_for('static', filename='images/editar_24.png') }}" alt="editar">
-                                                </button>
-                                                <form action="{{ url_for('subetapas') }}" method="POST" style="display: inline;" onsubmit="return confirmAndDisableButton(this, '{{ subetapa.nome }}');">
-                                                    <input type="hidden" name="subetapa_id" value="{{ subetapa.id }}">
-                                                    <input type="hidden" name="action" value="excluir">
-                                                    <button type="submit" class="btn">
-                                                        <img src="{{ url_for('static', filename='images/excluir_24.png') }}" alt="excluir">
-                                                    </button>
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                {% endfor %}
-                            </tbody>
-                        </table>
+                    <div class="form-group mt-2 col-md-6">
+                        {{ form_subetapas.nome.label(class="form-control-label") }}
+                        {% if form_subetapas.nome.errors %}
+                        {{ form_subetapas.nome(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form_subetapas_obra.nome.errors %}
+                            {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_subetapas.nome(class="form-control") }}
+                        {% endif %}
                     </div>
+                    <div class="form-group mt-2 col-md-6">
+                        {{ form_subetapas.etapa_relacionada.label(class="form-control-label") }}
+                        {% if form_subetapas.etapa_relacionada.errors %}
+                        {{ form_subetapas.etapa_relacionada(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                            {% for erro in form_subetapas_obra.etapa_relacionada.errors %}
+                            {{ erro }}
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_subetapas.etapa_relacionada(class="form-control") }}
+                        {% endif %}
+                    </div>
+                </div>
+                {{ form_subetapas.botao(class="btn btn-primary mt-3") }}
+            </form>
+            <hr>
+            <div class="row">
+                <div class="col-md-12">
+                    <table class="table">
+                        <tbody>
+                            {% for etapa in usuario.etapas | sort(attribute='nome') %}
+                            <tr class="etapa">
+                                <td colspan="3">{{ etapa.nome.capitalize() }}</td>
+                            </tr>
+                            {% for subetapa in etapa.subetapas | sort(attribute='nome') %}
+                            <tr class="subetapa">
+                                <td></td>
+                                <td>{{ subetapa.nome.capitalize() }}</td>
+                                <td>
+                                    <button type="button" class="btn"
+                                        onclick="window.location='{{ url_for('subetapaseditar', subetapa_id=subetapa.id) }}'">
+                                        <img src="{{ url_for('static', filename='images/editar_24.png') }}"
+                                            alt="editar">
+                                    </button>
+                                    <form action="{{ url_for('subetapas') }}" method="POST" style="display: inline;"
+                                        onsubmit="return confirmAndDisableButton(this, '{{ subetapa.nome }}');">
+                                        <input type="hidden" name="subetapa_id" value="{{ subetapa.id }}">
+                                        <input type="hidden" name="action" value="excluir">
+                                        <button type="submit" class="btn">
+                                            <img src="{{ url_for('static', filename='images/excluir_24.png') }}"
+                                                alt="excluir">
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
-        function confirmAndDisableButton(form, subetapaNome) {
-            if (!form.hasAttribute('data-submitted')) {
-                if (confirm('Tem certeza que deseja excluir a subetapa "' + subetapaNome + '"?')) {
-                    var button = form.querySelector('button[type="submit"]');
-                    button.disabled = true;
-                    form.setAttribute('data-submitted', 'true');
-                    return true;
-                }
-                return false;
+<script>
+    function confirmAndDisableButton(form, subetapaNome) {
+        if (!form.hasAttribute('data-submitted')) {
+            if (confirm('Tem certeza que deseja excluir a subetapa "' + subetapaNome + '"?')) {
+                var button = form.querySelector('button[type="submit"]');
+                button.disabled = true;
+                form.setAttribute('data-submitted', 'true');
+                return true;
             }
             return false;
         }
-    </script>
+        return false;
+    }
+</script>
 {% endblock %}

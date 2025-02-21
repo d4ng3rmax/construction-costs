@@ -1,299 +1,302 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div class="col out-sidebar">
-        <div class="card">
-            <div class="card-header card-header-padrao">
-                <div class="card-titulo-padrao">
-                    Lançamento de Custo - Materiais
-                </div>
-                <div class="card-subtitulo-padrao">
-                        <a href="{{ url_for('obras', prev_page='lancamentomateriais') }}">
-                        {% if obra_selecionada %}
-                            Obra Selecionada: {{ obra_selecionada.nome.capitalize() }}
-                        {% else %}
-                            Nenhuma obra foi selecionada!
-                        {% endif %}
-                    </a>
-                </div>
-            </div>
-            <div class="card-body">
-                <div class="card-subtitulo-padrao mb-2">
-                    {% if obra_selecionada %}
-                        <button type="button" class="btn btn-form1 mt-3" id="limparCampos">Novo Lançamento</button>
-                    {% else %}
-                        <button type="button" class="btn btn-secondary mt-3" id="limparCampos" disabled>Novo <Lançamento></Lançamento></button>
-                    {% endif %}
-                </div>
-                <div class="row mb-4">
-                    <form method="POST" action="" id="LancamentoCustoForm" class="">
-                        {{ form_editar_lancamento_custo.csrf_token }}
-                        <div class="borda-lanc col-8">
-                            <div class="row">
-                                <div class="form-group col-3">
-                                    {{ form_editar_lancamento_custo.data_lancamento.label(class="form-control-label") }}
-                                    {% if form_editar_lancamento_custo.data_lancamento.errors %}
-                                        {{ form_editar_lancamento_custo.data_lancamento(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_lancamento_custo.data_lancamento.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_lancamento_custo.data_lancamento(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                                <div class="form-group col-6">
-                                    {{ form_editar_lancamento_custo.fornecedor_id.label(class="form-control-label") }}
-                                    {% if form_editar_lancamento_custo.fornecedor_id.errors %}
-                                        {{ form_editar_lancamento_custo.fornecedor_id(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_lancamento_custo.fornecedor_id.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_lancamento_custo.fornecedor_id(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                                <div class="form-group col-3">
-                                    {{ form_editar_lancamento_custo.nota_fiscal.label(class="form-control-label") }}
-                                    {% if form_editar_lancamento_custo.nota_fiscal.errors %}
-                                        {{ form_editar_lancamento_custo.nota_fiscal(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_lancamento_custo.nota_fiscal.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_lancamento_custo.nota_fiscal(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="row">
-                                <div class="form-group mt-2 col-6">
-                                    {{ form_editar_lancamento_custo.etapa_id.label(class="form-control-label") }}
-                                    {% if form_editar_lancamento_custo.etapa_id.errors %}
-                                        {{ form_editar_lancamento_custo.etapa_id(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_lancamento_custo.etapa_id.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_lancamento_custo.etapa_id(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                                <div class="form-group mt-2 col-6">
-                                    {{ form_editar_lancamento_custo.subetapa_id.label(class="form-control-label") }}
-                                    {% if form_editar_lancamento_custo.subetapa_id.errors %}
-                                        {{ form_editar_lancamento_custo.subetapa_id(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_lancamento_custo.subetapa_id.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_lancamento_custo.subetapa_id(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="form-group mt-2 col-7">
-                                {{ form_editar_lancamento_custo.material_id.label(class="form-control-label") }}
-                                {% if form_editar_lancamento_custo.material_id.errors %}
-                                    {{ form_editar_lancamento_custo.material_id(class="form-control is-invalid") }}
-                                    <div class="invalid-feedback">
-                                        {% for erro in form_editar_lancamento_custo.material_id.errors %}
-                                            {{ erro }}
-                                        {% endfor %}
-                                    </div>
-                                {% else %}
-                                    {{ form_editar_lancamento_custo.material_id(class="form-control") }}
-                                {% endif %}
-                            </div>
-                                <div class="form-group mt-2 col-2">
-                                    {{ form_editar_lancamento_custo.quantidade.label(class="form-control-label") }}
-                                    {% if form_editar_lancamento_custo.quantidade.errors %}
-                                        {{ form_editar_lancamento_custo.quantidade(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_lancamento_custo.quantidade.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_lancamento_custo.quantidade(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                                <div class="form-group mt-2 col-3">
-                                    {{ form_editar_lancamento_custo.preco_unitario.label(class="form-control-label") }}
-                                    {% if form_editar_lancamento_custo.preco_unitario.errors %}
-                                        {{ form_editar_lancamento_custo.preco_unitario(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_lancamento_custo.preco_unitario.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_lancamento_custo.preco_unitario(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="card-subtitulo-padrao">
-                                {% if obra_selecionada %}
-                                    {{ form_editar_lancamento_custo.adicionar_item(class="btn btn-form1 mt-3") }}
-                                {% else %}
-                                    {{ form_editar_lancamento_custo.adicionar_item(class="btn btn-form2 mt-3", disabled=True) }}
-                                {% endif %}
-                            </div>
+<div class="col out-sidebar">
+   <div class="card">
+      <div class="card-header card-header-padrao">
+         <div class="card-titulo-padrao">
+            Lançamento de Custo - Materiais
+         </div>
+         <div class="card-subtitulo-padrao">
+            <a href="{{ url_for('obras', prev_page='lancamentomateriais') }}">
+               {% if obra_selecionada %}
+               Obra Selecionada: {{ obra_selecionada.nome.capitalize() }}
+               {% else %}
+               Nenhuma obra foi selecionada!
+               {% endif %}
+            </a>
+         </div>
+      </div>
+      <div class="card-body">
+         <div class="card-subtitulo-padrao mb-2">
+            {% if obra_selecionada %}
+            <button type="button" class="btn btn-primary mt-3" id="limparCampos">Novo Lançamento</button>
+            {% else %}
+            <button type="button" class="btn btn-secondary mt-3" id="limparCampos" disabled>Novo <Lançamento>
+               </Lançamento></button>
+            {% endif %}
+         </div>
+         <div class="row mb-4">
+            <form method="POST" action="" id="LancamentoCustoForm" class="">
+               {{ form_editar_lancamento_custo.csrf_token }}
+               <div class="borda-lanc col-8">
+                  <div class="row">
+                     <div class="form-group col-3">
+                        {{ form_editar_lancamento_custo.data_lancamento.label(class="form-control-label") }}
+                        {% if form_editar_lancamento_custo.data_lancamento.errors %}
+                        {{ form_editar_lancamento_custo.data_lancamento(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_lancamento_custo.data_lancamento.errors %}
+                           {{ erro }}
+                           {% endfor %}
                         </div>
-                    </form>
-                </div>
-                <div class="row">
-                    <hr>
-                    <table class="table" id="myDataTable">
-                        <thead>
-                            <tr>
-                                <th class="col-lanc" scope="col">Data</th>
-                                <th class="col-lanc" scope="col">Fornecedor</th>
-                                <th class="col-lanc" scope="col">Nota Fiscal</th>
-                                <th class="col-lanc" scope="col">Etapa</th>
-                                <th class="col-lanc" scope="col">Subetapa</th>
-                                <th class="col-lanc" scope="col">Material</th>
-                                <th class="col-lanc" scope="col">Quantidade</th>
-                                <th class="col-lanc" scope="col">Preço Unit</th>
-                                <th class="col-lanc" scope="col">Valor Total</th>
-                                <th class="col-lanc" scope="col"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for lancamento in obra_selecionada.lancamentos_custo %}
-                                <tr>
-                                    <td class="col-lanc">{{ lancamento.data_lancamento.strftime('%d/%m/%Y') }}</td>
-                                    <td class="col-lanc">{{ lancamento.fornecedor.nome.capitalize() }}</td>
-                                    <td class="col-lanc">{{ lancamento.nota_fiscal }}</td>
-                                    <td class="col-lanc">{{ lancamento.etapa.nome.capitalize() }}</td>
-                                    <td class="col-lanc">{{ lancamento.subetapa.nome.capitalize() }}</td>
-                                    <td class="col-lanc">{{ lancamento.material.nome.capitalize() }}</td>
-                                    <td class="col-lanc">{{ lancamento.quantidade }}</td>
-                                    <td class="col-lanc">
-                                        {{ "{:,.2f}".format(lancamento.preco_unit).replace(",", ";").replace(".", ",").replace(";", ".") }}
-                                    </td>
-                                    <td class="col-lanc">
-                                        {{ "{:,.2f}".format(lancamento.quantidade * lancamento.preco_unit).replace(",", ";").replace(".", ",").replace(";", ".") }}
-                                    </td>
-                                    <td class="col-lanc">
+                        {% else %}
+                        {{ form_editar_lancamento_custo.data_lancamento(class="form-control") }}
+                        {% endif %}
+                     </div>
+                     <div class="form-group col-6">
+                        {{ form_editar_lancamento_custo.fornecedor_id.label(class="form-control-label") }}
+                        {% if form_editar_lancamento_custo.fornecedor_id.errors %}
+                        {{ form_editar_lancamento_custo.fornecedor_id(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_lancamento_custo.fornecedor_id.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_lancamento_custo.fornecedor_id(class="form-control") }}
+                        {% endif %}
+                     </div>
+                     <div class="form-group col-3">
+                        {{ form_editar_lancamento_custo.nota_fiscal.label(class="form-control-label") }}
+                        {% if form_editar_lancamento_custo.nota_fiscal.errors %}
+                        {{ form_editar_lancamento_custo.nota_fiscal(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_lancamento_custo.nota_fiscal.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_lancamento_custo.nota_fiscal(class="form-control") }}
+                        {% endif %}
+                     </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                     <div class="form-group mt-2 col-6">
+                        {{ form_editar_lancamento_custo.etapa_id.label(class="form-control-label") }}
+                        {% if form_editar_lancamento_custo.etapa_id.errors %}
+                        {{ form_editar_lancamento_custo.etapa_id(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_lancamento_custo.etapa_id.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_lancamento_custo.etapa_id(class="form-control") }}
+                        {% endif %}
+                     </div>
+                     <div class="form-group mt-2 col-6">
+                        {{ form_editar_lancamento_custo.subetapa_id.label(class="form-control-label") }}
+                        {% if form_editar_lancamento_custo.subetapa_id.errors %}
+                        {{ form_editar_lancamento_custo.subetapa_id(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_lancamento_custo.subetapa_id.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_lancamento_custo.subetapa_id(class="form-control") }}
+                        {% endif %}
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="form-group mt-2 col-7">
+                        {{ form_editar_lancamento_custo.material_id.label(class="form-control-label") }}
+                        {% if form_editar_lancamento_custo.material_id.errors %}
+                        {{ form_editar_lancamento_custo.material_id(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_lancamento_custo.material_id.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_lancamento_custo.material_id(class="form-control") }}
+                        {% endif %}
+                     </div>
+                     <div class="form-group mt-2 col-2">
+                        {{ form_editar_lancamento_custo.quantidade.label(class="form-control-label") }}
+                        {% if form_editar_lancamento_custo.quantidade.errors %}
+                        {{ form_editar_lancamento_custo.quantidade(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_lancamento_custo.quantidade.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_lancamento_custo.quantidade(class="form-control") }}
+                        {% endif %}
+                     </div>
+                     <div class="form-group mt-2 col-3">
+                        {{ form_editar_lancamento_custo.preco_unitario.label(class="form-control-label") }}
+                        {% if form_editar_lancamento_custo.preco_unitario.errors %}
+                        {{ form_editar_lancamento_custo.preco_unitario(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_lancamento_custo.preco_unitario.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_lancamento_custo.preco_unitario(class="form-control") }}
+                        {% endif %}
+                     </div>
+                  </div>
+                  <div class="card-subtitulo-padrao">
+                     {% if obra_selecionada %}
+                     {{ form_editar_lancamento_custo.adicionar_item(class="btn btn-primary mt-3") }}
+                     {% else %}
+                     {{ form_editar_lancamento_custo.adicionar_item(class="btn btn-primary mt-3", disabled=True) }}
+                     {% endif %}
+                  </div>
+               </div>
+            </form>
+         </div>
+         <div class="row">
+            <hr>
+            <table class="table" id="myDataTable">
+               <thead>
+                  <tr>
+                     <th class="col-lanc" scope="col">Data</th>
+                     <th class="col-lanc" scope="col">Fornecedor</th>
+                     <th class="col-lanc" scope="col">Nota Fiscal</th>
+                     <th class="col-lanc" scope="col">Etapa</th>
+                     <th class="col-lanc" scope="col">Subetapa</th>
+                     <th class="col-lanc" scope="col">Material</th>
+                     <th class="col-lanc" scope="col">Quantidade</th>
+                     <th class="col-lanc" scope="col">Preço Unit</th>
+                     <th class="col-lanc" scope="col">Valor Total</th>
+                     <th class="col-lanc" scope="col"></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for lancamento in obra_selecionada.lancamentos_custo %}
+                  <tr>
+                     <td class="col-lanc">{{ lancamento.data_lancamento.strftime('%d/%m/%Y') }}</td>
+                     <td class="col-lanc">{{ lancamento.fornecedor.nome.capitalize() }}</td>
+                     <td class="col-lanc">{{ lancamento.nota_fiscal }}</td>
+                     <td class="col-lanc">{{ lancamento.etapa.nome.capitalize() }}</td>
+                     <td class="col-lanc">{{ lancamento.subetapa.nome.capitalize() }}</td>
+                     <td class="col-lanc">{{ lancamento.material.nome.capitalize() }}</td>
+                     <td class="col-lanc">{{ lancamento.quantidade }}</td>
+                     <td class="col-lanc">
+                        {{ "{:,.2f}".format(lancamento.preco_unit).replace(",", ";").replace(".", ",").replace(";", ".")
+                        }}
+                     </td>
+                     <td class="col-lanc">
+                        {{ "{:,.2f}".format(lancamento.quantidade * lancamento.preco_unit).replace(",",
+                        ";").replace(".", ",").replace(";", ".") }}
+                     </td>
+                     <td class="col-lanc">
 
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            flatpickr("#data_lancamento", {
-                dateFormat: "d/m/Y",
-                enableTime: false,
-                locale: "pt",
-            });
-        });
-    </script>
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+      flatpickr("#data_lancamento", {
+         dateFormat: "d/m/Y",
+         enableTime: false,
+         locale: "pt",
+      });
+   });
+</script>
 
-    <script>
-        function confirmAndDisableButton(form, materialNome) {
-            if (!form.hasAttribute('data-submitted')) {
-                if (confirm('Tem certeza que deseja excluir o lançamento?')) {
-                    var button = form.querySelector('button[type="submit"]');
-                    button.disabled = true;
-                    form.setAttribute('data-submitted', 'true');
-                    return true;
-                }
-                return false;
+<script>
+   function confirmAndDisableButton(form, materialNome) {
+      if (!form.hasAttribute('data-submitted')) {
+         if (confirm('Tem certeza que deseja excluir o lançamento?')) {
+            var button = form.querySelector('button[type="submit"]');
+            button.disabled = true;
+            form.setAttribute('data-submitted', 'true');
+            return true;
+         }
+         return false;
+      }
+      return false;
+   }
+</script>
+
+
+<script>
+   $(document).ready(function () {
+      // Captura o evento de mudança no campo etapa_id
+      $("#etapa_id").change(function () {
+         var etapaId = $(this).val();  // Obtém o valor selecionado
+
+         // Faz uma solicitação AJAX para obter as subetapas relacionadas à etapa selecionada
+         $.ajax({
+            type: "GET",
+            url: "{{ url_for('obter_subetapas_por_etapa') }}",  // Substitua isso pelo endpoint real em suas rotas
+            data: { etapa_id: etapaId },
+            success: function (response) {
+               // Limpa as opções atuais no campo subetapa_id
+               $("#subetapa_id").empty();
+
+               // Adiciona as novas opções com base na resposta AJAX, capitalizando a primeira letra
+               for (var i = 0; i < response.length; i++) {
+                  var subetapaNome = response[i].nome.charAt(0).toUpperCase() + response[i].nome.slice(1);
+                  $("#subetapa_id").append('<option value="' + response[i].id + '">' + subetapaNome + '</option>');
+               }
+            },
+            error: function (error) {
+               console.log("Erro ao obter subetapas:", error);
             }
-            return false;
-        }
-    </script>
+         });
+      });
+   });
+</script>
+
+<script>
+   // Função para armazenar a posição da janela antes do envio do formulário
+   function storeScrollPosition() {
+      sessionStorage.setItem('scrollPosition', window.scrollY);
+   }
+
+   // Função para restaurar a posição da janela após o envio do formulário
+   function restoreScrollPosition() {
+      const scrollPosition = sessionStorage.getItem('scrollPosition');
+      if (scrollPosition !== null) {
+         window.scrollTo(0, parseInt(scrollPosition));
+      }
+   }
+
+   // Função a ser chamada após o carregamento da página
+   document.addEventListener('DOMContentLoaded', function () {
+      restoreScrollPosition(); // Restaura a posição da janela
+
+      // Captura o evento de envio do formulário
+      const form = document.getElementById('LancamentoCustoForm');
+      form.addEventListener('submit', function () {
+         storeScrollPosition(); // Armazena a posição da janela antes do envio
+      });
+   });
+</script>
 
 
-    <script>
-        $(document).ready(function () {
-            // Captura o evento de mudança no campo etapa_id
-            $("#etapa_id").change(function () {
-                var etapaId = $(this).val();  // Obtém o valor selecionado
+<script>
+   $(document).ready(function () {
+      $('#myDataTable').DataTable({
+         "language": {
+            "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
+         }
+         //"pageLength": -1,
+         //"lengthChange": false,
+         //"info": false,
+         //"paging": false
+      });
+   });
+</script>
 
-                // Faz uma solicitação AJAX para obter as subetapas relacionadas à etapa selecionada
-                $.ajax({
-                    type: "GET",
-                    url: "{{ url_for('obter_subetapas_por_etapa') }}",  // Substitua isso pelo endpoint real em suas rotas
-                    data: {etapa_id: etapaId},
-                    success: function (response) {
-                        // Limpa as opções atuais no campo subetapa_id
-                        $("#subetapa_id").empty();
-
-                        // Adiciona as novas opções com base na resposta AJAX, capitalizando a primeira letra
-                        for (var i = 0; i < response.length; i++) {
-                            var subetapaNome = response[i].nome.charAt(0).toUpperCase() + response[i].nome.slice(1);
-                            $("#subetapa_id").append('<option value="' + response[i].id + '">' + subetapaNome + '</option>');
-                        }
-                    },
-                    error: function (error) {
-                        console.log("Erro ao obter subetapas:", error);
-                    }
-                });
-            });
-        });
-    </script>
-
-    <script>
-        // Função para armazenar a posição da janela antes do envio do formulário
-        function storeScrollPosition() {
-            sessionStorage.setItem('scrollPosition', window.scrollY);
-        }
-
-        // Função para restaurar a posição da janela após o envio do formulário
-        function restoreScrollPosition() {
-            const scrollPosition = sessionStorage.getItem('scrollPosition');
-            if (scrollPosition !== null) {
-                window.scrollTo(0, parseInt(scrollPosition));
-            }
-        }
-
-        // Função a ser chamada após o carregamento da página
-        document.addEventListener('DOMContentLoaded', function () {
-            restoreScrollPosition(); // Restaura a posição da janela
-
-            // Captura o evento de envio do formulário
-            const form = document.getElementById('LancamentoCustoForm');
-            form.addEventListener('submit', function () {
-                storeScrollPosition(); // Armazena a posição da janela antes do envio
-            });
-        });
-    </script>
-
-
-    <script>
-        $(document).ready(function () {
-            $('#myDataTable').DataTable({
-                "language": {
-                    "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
-                }
-                //"pageLength": -1,
-                //"lengthChange": false,
-                //"info": false,
-                //"paging": false
-            });
-        });
-    </script>
-
-    <script>
-        document.getElementById('limparCampos').addEventListener('click', function() {
-            window.location.href = "{{ url_for('lancamentomateriais') }}";
-        });
-    </script>
+<script>
+   document.getElementById('limparCampos').addEventListener('click', function () {
+      window.location.href = "{{ url_for('lancamentomateriais') }}";
+   });
+</script>
 
 {% endblock %}

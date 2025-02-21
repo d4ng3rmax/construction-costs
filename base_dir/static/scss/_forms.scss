@@ -1,0 +1,10 @@
+#registration-works {
+   input.area {
+      &::placeholder {
+         text-align: right;
+      }
+      &::-webkit-input-placeholder {
+         text-align: right;
+      }
+   }
+}

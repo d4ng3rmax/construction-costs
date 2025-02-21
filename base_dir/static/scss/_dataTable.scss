@@ -1,0 +1,25 @@
+.dataTables_wrapper {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   flex-wrap: wrap;
+   padding: 1.25rem;
+}
+
+.dataTables_length {
+      display: flex;
+   align-items: center;
+}
+
+.dataTables_filter {
+   display: flex;
+   align-items: center;
+}
+
+.dataTables_length select,
+.dataTables_filter input {
+   margin-left: 5px;
+   padding: 4px 8px;
+   border-radius: 4px;
+   border: 1px solid #ccc;
+}

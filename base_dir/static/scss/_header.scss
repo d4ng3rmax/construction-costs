@@ -1,0 +1,22 @@
+.sidebar {
+   a.sidebar-brand {
+      height: auto;
+      background-color: var(--color-blue-v100);
+
+      // Logo
+      img {
+         max-width: 150px;
+         transition: max-width 0.3s ease;
+      }
+   }
+
+   &.toggled a.sidebar-brand img {
+      max-width: 80px;
+   }
+
+   @media only screen and (max-width: 400px) {
+      a.sidebar-brand img {
+         max-width: 80px;
+      }
+   }
+}

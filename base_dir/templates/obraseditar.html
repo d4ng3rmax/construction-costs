@@ -1,155 +1,156 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div class="col out-sidebar">
-        <div class="card">
-            <div class="card-header card-header-padrao">
-                <div class="card-titulo-padrao">
-                    Editar Obras
-                </div>
+<div class="col out-sidebar">
+   <div class="card">
+      <div class="card-header card-header-padrao">
+         <div class="card-titulo-padrao">
+            Editar Obras
+         </div>
+      </div>
+      <div class="card-body">
+         <form method="POST" action="" id="editarObraForm" class="col-md-8">
+            {{ form_editar_obra.csrf_token }}
+            <div class="container">
+               <div class="row">
+                  <div class="col-md-3">
+                     <div class="form-group mt-2">
+                        {{ form_editar_obra.nome.label(class="form-control-label") }}
+                        {% if form_editar_obra.nome.errors %}
+                        {{ form_editar_obra.nome(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_obra.nome.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_obra.nome(class="form-control") }}
+                        {% endif %}
+                     </div>
+                  </div>
+                  <div class="col-md-2">
+                     <div class="form-group mt-2">
+                        {{ form_editar_obra.area.label(class="form-control-label") }}
+                        {% if form_editar_obra.area.errors %}
+                        {{ form_editar_obra.area(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_obra.area.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_obra.area(class="form-control") }}
+                        {% endif %}
+                     </div>
+                  </div>
+                  <div class="col-md-3">
+                     <div class="form-group mt-2">
+                        {{ form_editar_obra.data_inicio.label(class="form-control-label") }}
+                        {% if form_editar_obra.data_inicio.errors %}
+                        {{ form_editar_obra.data_inicio(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_obra.data_inicio.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_obra.data_inicio(class="form-control") }}
+                        {% endif %}
+                     </div>
+                  </div>
+                  <div class="col-md-4">
+                     <div class="form-group mt-2">
+                        {{ form_editar_obra.endereco.label(class="form-control-label") }}
+                        {% if form_editar_obra.endereco.errors %}
+                        {{ form_editar_obra.endereco(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_obra.endereco.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_obra.endereco(class="form-control") }}
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="form-group mt-2">
+                        {{ form_editar_obra.descricao.label(class="form-control-label") }}
+                        {% if form_editar_obra.descricao.errors %}
+                        {{ form_editar_obra.descricao(class="form-control is-invalid") }}
+                        <div class="invalid-feedback">
+                           {% for erro in form_editar_obra.descricao.errors %}
+                           {{ erro }}
+                           {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ form_editar_obra.descricao(class="form-control") }}
+                        {% endif %}
+                     </div>
+                  </div>
+               </div>
+
+               <div class="row mt-3">
+                  <div class="col-md-12 d-flex justify-content-end align-items-center mt-3">
+                     {{ form_editar_obra.botao_salvarobra(class="btn btn-primary") }}
+                     <a href="{{ url_for('obras') }}" class="btn btn-secondary ml-2">Cancelar</a>
+                  </div>
+               </div>
             </div>
-            <div class="card-body">
-                <form method="POST" action="" id="editarObraForm" class="col-md-8">
-                    {{ form_editar_obra.csrf_token }}
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="form-group mt-2">
-                                    {{ form_editar_obra.nome.label(class="form-control-label") }}
-                                    {% if form_editar_obra.nome.errors %}
-                                        {{ form_editar_obra.nome(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_obra.nome.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_obra.nome(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group mt-2">
-                                    {{ form_editar_obra.area.label(class="form-control-label") }}
-                                    {% if form_editar_obra.area.errors %}
-                                        {{ form_editar_obra.area(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_obra.area.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_obra.area(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group mt-2">
-                                    {{ form_editar_obra.data_inicio.label(class="form-control-label") }}
-                                    {% if form_editar_obra.data_inicio.errors %}
-                                        {{ form_editar_obra.data_inicio(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_obra.data_inicio.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_obra.data_inicio(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group mt-2">
-                                    {{ form_editar_obra.endereco.label(class="form-control-label") }}
-                                    {% if form_editar_obra.endereco.errors %}
-                                        {{ form_editar_obra.endereco(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_obra.endereco.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_obra.endereco(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group mt-2">
-                                    {{ form_editar_obra.descricao.label(class="form-control-label") }}
-                                    {% if form_editar_obra.descricao.errors %}
-                                        {{ form_editar_obra.descricao(class="form-control is-invalid") }}
-                                        <div class="invalid-feedback">
-                                            {% for erro in form_editar_obra.descricao.errors %}
-                                                {{ erro }}
-                                            {% endfor %}
-                                        </div>
-                                    {% else %}
-                                        {{ form_editar_obra.descricao(class="form-control") }}
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row mt-3">
-                            <div class="col-md-12">
-                                {{ form_editar_obra.botao_salvarobra(class="btn btn-form1 mt-2") }}
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <hr>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Data de Início</th>
-                            <th scope="col">Área</th>
-                            <th scope="col">Endereço</th>
-                            <th scope="col">Descrição</th>
-                            <th scope="col">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for obra in usuario.obras %}
-                            <tr>
-                                <td>{{ obra.nome.capitalize() }}</td>
-                                <td>{{ obra.data_inicio.strftime('%d/%m/%Y') }}</td>
-                                <td>{{ obra.area }}</td>
-                                <td>{{ obra.endereco }}</td>
-                                <td style="max-width: 200px;">{{ obra.descricao }}</td>
-                                <td>
-                                    <button type="button" class="btn btn-warning"
-                                            onclick="window.location='{{ url_for('obraseditar', obra_id=obra.id) }}'">
-                                        Editar</button>
-                                    <form action="{{ url_for('obras') }}" method="POST" style="display: inline;">
-                                        <input type="hidden" name="obra_id" value="{{ obra.id }}">
-                                        <input type="hidden" name="action" value="excluir">
-                                        <button type="submit" class="btn btn-danger">Excluir</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                        <!-- Adicione mais linhas conforme necessário -->
-                    </tbody>
-                </table>
+         </form>
+         <hr>
+         <table class="table">
+            <thead>
+               <tr>
+                  <th scope="col">Nome</th>
+                  <th scope="col">Data de Início</th>
+                  <th scope="col">Área</th>
+                  <th scope="col">Endereço</th>
+                  <th scope="col">Descrição</th>
+                  <th scope="col">Ações</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for obra in usuario.obras %}
+               <tr>
+                  <td>{{ obra.nome.capitalize() }}</td>
+                  <td>{{ obra.data_inicio.strftime('%d/%m/%Y') }}</td>
+                  <td>{{ obra.area }}</td>
+                  <td>{{ obra.endereco }}</td>
+                  <td style="max-width: 200px;">{{ obra.descricao }}</td>
+                  <td>
+                     <button type="button" class="btn btn-warning"
+                        onclick="window.location='{{ url_for('obraseditar', obra_id=obra.id) }}'">
+                        Editar</button>
+                     <form action="{{ url_for('obras') }}" method="POST" style="display: inline;">
+                        <input type="hidden" name="obra_id" value="{{ obra.id }}">
+                        <input type="hidden" name="action" value="excluir">
+                        <button type="submit" class="btn btn-danger">Excluir</button>
+                     </form>
+                  </td>
+               </tr>
+               {% endfor %}
+               <!-- Adicione mais linhas conforme necessário -->
+            </tbody>
+         </table>
 
 
 
-            </div>
-        </div>
-    </div>
+      </div>
+   </div>
+</div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            flatpickr("#data_inicio", {
-                dateFormat: "d/m/Y",
-                enableTime: false,
-                locale: "pt",
-            });
-        });
-    </script>
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+      flatpickr("#data_inicio", {
+         dateFormat: "d/m/Y",
+         enableTime: false,
+         locale: "pt",
+      });
+   });
+</script>
 
 
 {% endblock %}

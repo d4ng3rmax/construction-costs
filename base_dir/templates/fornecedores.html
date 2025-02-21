@@ -1,78 +1,79 @@
 {% extends 'base.html' %}
 {% block body %}
-    <div class="col out-sidebar">
-        <div class="card">
-            <div class="card-header card-header-padrao">
-                <div class="card-titulo-padrao">
-                    Fornecedores
-                </div>
+<div class="col out-sidebar">
+   <div class="card">
+      <div class="card-header card-header-padrao">
+         <div class="card-titulo-padrao">
+            Fornecedores
+         </div>
+      </div>
+      <div class="card-body">
+         <form method="POST" action="" id="EtapasForm" class="col-md-3">
+            {{ form_fornecedores.csrf_token }}
+            <div class="form-group mt-2">
+               {{ form_fornecedores.nome.label(class="form-control-label") }}
+               {% if form_fornecedores.nome.errors %}
+               {{ form_fornecedores.nome(class="form-control is-invalid") }}
+               <div class="invalid-feedback">
+                  {% for erro in form_fornecedores.nome.errors %}
+                  {{ erro }}
+                  {% endfor %}
+               </div>
+               {% else %}
+               {{ form_fornecedores.nome(class="form-control") }}
+               {% endif %}
             </div>
-            <div class="card-body">
-                <form method="POST" action="" id="EtapasForm" class="col-md-3">
-                    {{ form_fornecedores.csrf_token }}
-                    <div class="form-group mt-2">
-                        {{ form_fornecedores.nome.label(class="form-control-label") }}
-                        {% if form_fornecedores.nome.errors %}
-                            {{ form_fornecedores.nome(class="form-control is-invalid") }}
-                            <div class="invalid-feedback">
-                                {% for erro in form_fornecedores.nome.errors %}
-                                    {{ erro }}
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            {{ form_fornecedores.nome(class="form-control") }}
-                        {% endif %}
-                    </div>
-                    {{ form_fornecedores.botao(class="btn btn-form1 mt-3") }}
-                </form>
+            {{ form_fornecedores.botao(class="btn btn-primary mt-3") }}
+         </form>
 
-                <hr>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Nome</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for fornecedor in usuario.fornecedores|sort(attribute='nome') %}
-                            <tr>
-                                <td>{{ fornecedor.nome.title() }}</td>
-                                <td style="width: 300px;">
-                                    <button type="button" class="btn"
-                                            onclick="window.location='{{ url_for('fornecedoreseditar', fornecedor_id=fornecedor.id) }}'">
-                                        <img src="{{ url_for('static', filename='images/editar_24.png') }}" alt="excluir">
-                                    </button>
-                                    <form action="{{ url_for('fornecedores') }}" method="POST" style="display: inline;" onsubmit="return confirmAndDisableButton(this, '{{ fornecedor.nome }}');">
-                                        <input type="hidden" name="fornecedor_id" value="{{ fornecedor.id }}">
-                                        <input type="hidden" name="action" value="excluir">
-                                        <button type="submit" class="btn">
-                                            <img src="{{ url_for('static', filename='images/excluir_24.png') }}" alt="excluir">
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+         <hr>
+         <table class="table">
+            <thead>
+               <tr>
+                  <th scope="col">Nome</th>
+                  <th scope="col"></th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for fornecedor in usuario.fornecedores|sort(attribute='nome') %}
+               <tr>
+                  <td>{{ fornecedor.nome.title() }}</td>
+                  <td style="width: 300px;">
+                     <button type="button" class="btn"
+                        onclick="window.location='{{ url_for('fornecedoreseditar', fornecedor_id=fornecedor.id) }}'">
+                        <img src="{{ url_for('static', filename='images/editar_24.png') }}" alt="excluir">
+                     </button>
+                     <form action="{{ url_for('fornecedores') }}" method="POST" style="display: inline;"
+                        onsubmit="return confirmAndDisableButton(this, '{{ fornecedor.nome }}');">
+                        <input type="hidden" name="fornecedor_id" value="{{ fornecedor.id }}">
+                        <input type="hidden" name="action" value="excluir">
+                        <button type="submit" class="btn">
+                           <img src="{{ url_for('static', filename='images/excluir_24.png') }}" alt="excluir">
+                        </button>
+                     </form>
+                  </td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
+      </div>
+   </div>
+</div>
 
 
-    <script>
-        function confirmAndDisableButton(form, fornecedorNome) {
-            if (!form.hasAttribute('data-submitted')) {
-                if (confirm('Tem certeza que deseja excluir o fornecedor "' + fornecedorNome + '"?')) {
-                    var button = form.querySelector('button[type="submit"]');
-                    button.disabled = true;
-                    form.setAttribute('data-submitted', 'true');
-                    return true;
-                }
-                return false;
-            }
-            return false;
-        }
-    </script>
+<script>
+   function confirmAndDisableButton(form, fornecedorNome) {
+      if (!form.hasAttribute('data-submitted')) {
+         if (confirm('Tem certeza que deseja excluir o fornecedor "' + fornecedorNome + '"?')) {
+            var button = form.querySelector('button[type="submit"]');
+            button.disabled = true;
+            form.setAttribute('data-submitted', 'true');
+            return true;
+         }
+         return false;
+      }
+      return false;
+   }
+</script>
 
 {% endblock %}
