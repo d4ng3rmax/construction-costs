@@ -385,6 +385,14 @@ class FormNotaFiscal(FlaskForm):
     data_lancamento = StringField("Data", validators=[DataRequired()])
     fornecedor_id = SelectField("Fornecedor", coerce=int, validators=[DataRequired()])
     nota_fiscal = StringField("Nota Fiscal", validators=[DataRequired()])
-    itens = FieldList(FormField(MaterialItemForm), min_entries=1)
-    adicionar_item = SubmitField("Adicionar Material")
+    itens = FieldList(
+        FormField(MaterialItemForm), min_entries=1
+    )  # Lista dinâmica de materiais
+    entrada = FloatField("Entrada", default=0)
+    parcelas = SelectField(
+        "Parcelas",
+        choices=[(str(i), f"{i}x") for i in range(1, 13)],
+        coerce=int,
+        default=1,
+    )
     confirmar_nf = SubmitField("Lançar Nota Fiscal")

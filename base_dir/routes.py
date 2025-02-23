@@ -897,14 +897,12 @@ def diversoseditar(diverso_id):
                 usuario=usuario,
             )
 
-        # Atualizar os campos da obra com os dados do formulário
         diverso.nome = diverso_nome
 
         db.session.commit()
         flash("diverso editada com sucesso!", "alert-success")
         return redirect(url_for("diversos"))
 
-    # Preencher o formulário com os dados existentes da obra
     form_editar_diversos.nome.data = diverso.nome
 
     return render_template(
@@ -931,7 +929,6 @@ def lancamentomateriais():
     usuario = current_user
     obra_selecionada = Obra.query.filter_by(id=usuario.obra_selecionada).first()
 
-    # 🚨 Verifica se o usuário selecionou uma obra antes de continuar
     if not obra_selecionada:
         flash(
             "Nenhuma obra foi selecionada. Selecione uma obra para continuar.",
@@ -939,64 +936,16 @@ def lancamentomateriais():
         )
         return redirect(url_for("obras"))
 
-    # Paginação para os lançamentos existentes
+    from base_dir.models import Fornecedores
+
+    fornecedores = Fornecedores.query.all()
+    form_nf.fornecedor_id.choices = [(f.id, f.nome) for f in fornecedores]
+
     page = request.args.get("page", 1, type=int)
     per_page = 20
     lancamentos = LancamentoCusto.query.filter_by(obra_id=obra_selecionada.id).paginate(
         page=page, per_page=per_page, error_out=False
     )
-
-    # 🚨 Se o usuário confirmar a Nota Fiscal, adicionamos os materiais de uma vez
-    if form_nf.validate_on_submit() and form_nf.confirmar_nf.data:
-        total_nf = sum(
-            item["quantidade"] * item["preco_unitario"] for item in form_nf.itens.data
-        )
-        entrada = float(request.form.get("entrada", 0))
-        parcelas = int(request.form.get("parcelas", 1))
-
-        # Criar lançamentos para cada material informado
-        for item in form_nf.itens.data:
-            novo_lancamento = LancamentoCusto(
-                data_lancamento=form_nf.data_lancamento.data,
-                nota_fiscal=form_nf.nota_fiscal.data,
-                fornecedor_id=form_nf.fornecedor_id.data,
-                obra_id=obra_selecionada.id,
-                etapa_id=item["etapa_id"],
-                subetapa_id=item["subetapa_id"],
-                material_id=item["material_id"],
-                quantidade=item["quantidade"],
-                preco_unit=item["preco_unitario"],
-            )
-            db.session.add(novo_lancamento)
-
-        # 🚨 Geração automática das contas a pagar
-        valor_parcela = (total_nf - entrada) / parcelas
-        for i in range(parcelas):
-            vencimento = datetime.strptime(
-                form_nf.data_lancamento.data, "%d/%m/%Y"
-            ) + relativedelta(months=i)
-            nova_conta = ContasPagar(
-                data_vencimento=vencimento,
-                valor=valor_parcela,
-                nota_fiscal=form_nf.nota_fiscal.data,
-            )
-            db.session.add(nova_conta)
-
-        db.session.commit()
-        flash(
-            "Nota Fiscal lançada com sucesso! Contas a pagar geradas.", "alert-success"
-        )
-        return redirect(url_for("lancamentomateriais"))
-
-    lancamento_id = request.form.get("lancamento_id")
-    action = request.form.get("action")
-    if action == "excluir":
-        lancamento = LancamentoCusto.query.get(lancamento_id)
-        if lancamento:
-            db.session.delete(lancamento)
-            db.session.commit()
-            flash("Lançamento excluído com sucesso!", "alert-success")
-            return redirect(url_for("lancamentomateriais"))
 
     return render_template(
         "lancamentocusto.html",

@@ -75,17 +75,28 @@
    </div>
    <!-- End of Page Wrapper -->
 
-   <!-- Bootstrap core JavaScript -->
+   <!-- Carregar jQuery antes de qualquer outro script -->
    <script src="{{ url_for('static', filename='vendor/jquery.min.js') }}"></script>
-   <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
+   <!-- Verificar se jQuery foi carregado corretamente -->
+   <script>
+      if (typeof jQuery == 'undefined') {
+         console.error("Erro: jQuery local não carregou. Tentando carregar via CDN...");
+         var script = document.createElement("script");
+         script.src = "https://code.jquery.com/jquery-3.6.0.min.js";
+         script.onload = function () {
+            console.log("jQuery carregado via CDN!");
+         };
+         document.head.appendChild(script);
+      } else {
+         // console.log("jQuery carregado com sucesso!");
+      }
+   </script>
    <script src="{{ url_for('static', filename='vendor/bootstrap.bundle.min.js') }}"></script>
-
-   <!-- Core plugin JavaScript -->
+   <script src="{{ url_for('static', filename='js/sb-admin-2.min.js') }}"></script>
+   <script src="{{ url_for('static', filename='vendor/jquery.dataTables.min.js') }}"></script>
    <script src="{{ url_for('static', filename='vendor/jquery.easing.min.js') }}"></script>
 
-   <!-- Custom scripts for all pages -->
-   <script src="{{ url_for('static', filename='js/sb-admin-2.min.js') }}"></script>
 
    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 

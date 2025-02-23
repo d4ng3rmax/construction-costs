@@ -1,162 +1,134 @@
 {% extends 'base.html' %}
 
 {% block body %}
-<div class="container-fluid">
-   <div class="row">
-      <div class="col-12">
-         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-               <h6 class="m-0 font-weight-bold text-primary">Lançamento de Custo - Materiais</h6>
-            </div>
-            <div class="card-body">
-               <form method="POST" action="" id="LancamentoCustoForm" class="w-100">
-                  {{ form_lancamento_custo.csrf_token }}
-                  <div class="row">
-                     <div class="form-group col-lg-3 col-md-6 col-12">
-                        {{ form_lancamento_custo.data_lancamento.label(class="form-control-label") }}
-                        {{ form_lancamento_custo.data_lancamento(class="form-control") }}
-                     </div>
-                     <div class="form-group col-lg-6 col-md-6 col-12">
-                        {{ form_lancamento_custo.fornecedor_id.label(class="form-control-label") }}
-                        {{ form_lancamento_custo.fornecedor_id(class="form-control") }}
-                     </div>
-                     <div class="form-group col-lg-3 col-md-6 col-12">
-                        {{ form_lancamento_custo.nota_fiscal.label(class="form-control-label") }}
-                        {{ form_lancamento_custo.nota_fiscal(class="form-control") }}
-                     </div>
-                  </div>
-
-                  <div class="row">
-                     <div class="form-group col-lg-6 col-md-6 col-12">
-                        {{ form_lancamento_custo.etapa_id.label(class="form-control-label") }}
-                        {{ form_lancamento_custo.etapa_id(class="form-control") }}
-                     </div>
-                     <div class="form-group col-lg-6 col-md-6 col-12">
-                        {{ form_lancamento_custo.subetapa_id.label(class="form-control-label") }}
-                        {{ form_lancamento_custo.subetapa_id(class="form-control") }}
-                     </div>
-                  </div>
-
-                  <div class="row">
-                     <div class="form-group col-lg-7 col-md-6 col-12">
-                        {{ form_lancamento_custo.material_id.label(class="form-control-label") }}
-                        {{ form_lancamento_custo.material_id(class="form-control") }}
-                     </div>
-                     <div class="form-group col-lg-2 col-md-3 col-12">
-                        {{ form_lancamento_custo.quantidade.label(class="form-control-label") }}
-                        {{ form_lancamento_custo.quantidade(class="form-control") }}
-                     </div>
-                     <div class="form-group col-lg-3 col-md-3 col-12">
-                        {{ form_lancamento_custo.preco_unitario.label(class="form-control-label") }}
-                        {{ form_lancamento_custo.preco_unitario(class="form-control") }}
-                     </div>
-                  </div>
-
-                  <div class="d-grid d-md-flex justify-content-md-end gap-2 mt-3">
-                     {% if obra_selecionada %}
-                     {{ form_lancamento_custo.adicionar_item(class="btn btn-primary") }}
-                     {% else %}
-                     {{ form_lancamento_custo.adicionar_item(class="btn btn-primary", disabled=True) }}
-                     {% endif %}
-                     <a href="{{ url_for('lancamentomateriais') }}" class="btn btn-secondary ml-3">Cancelar</a>
-                  </div>
-
-               </form>
-            </div>
-
-            <!-- Tabela de lançamentos -->
-            <div class="table-responsive w-100 mt-5">
-               <table class="table table-striped w-100" id="myDataTable">
-                  <thead>
-                     <tr>
-                        <th scope="col">Data</th>
-                        <th scope="col">Fornecedor</th>
-                        <th scope="col">Nota Fiscal</th>
-                        <th scope="col">Etapa</th>
-                        <th scope="col">Subetapa</th>
-                        <th scope="col">Material</th>
-                        <th scope="col">Quantidade</th>
-                        <th scope="col">Preço Unit</th>
-                        <th scope="col">Valor Total</th>
-                        <th scope="col">Ações</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {% for lancamento in lancamentos.items %}
-                     <tr>
-                        <td>{{ lancamento.data_lancamento.strftime('%d/%m/%Y') }}</td>
-                        <td>{{ lancamento.fornecedor.nome.capitalize() }}</td>
-                        <td>{{ lancamento.nota_fiscal }}</td>
-                        <td>{{ lancamento.etapa.nome.capitalize() }}</td>
-                        <td>{{ lancamento.subetapa.nome.capitalize() }}</td>
-                        <td>{{ lancamento.material.nome.capitalize() }}</td>
-                        <td>{{ lancamento.quantidade }}</td>
-                        <td>{{ "{:,.2f}".format(lancamento.preco_unit).replace(",", ";").replace(".", ",").replace(";",
-                           ".") }}</td>
-                        <td>{{ "{:,.2f}".format(lancamento.quantidade * lancamento.preco_unit).replace(",",
-                           ";").replace(".", ",").replace(";", ".") }}</td>
-                        <td>
-                           <button type="button" class="btn"
-                              onclick="window.location='{{ url_for('lancamentomateriaiseditar', lancamentomateriais_id=lancamento.id) }}'">
-                              <img src="{{ url_for('static', filename='images/editar_24.png') }}" alt="editar">
-                           </button>
-                           <form action="{{ url_for('lancamentomateriais') }}" method="POST" style="display: inline;">
-                              <input type="hidden" name="lancamento_id" value="{{ lancamento.id }}">
-                              <input type="hidden" name="action" value="excluir">
-                              <button type="submit" class="btn">
-                                 <img src="{{ url_for('static', filename='images/excluir_24.png') }}" alt="excluir">
-                              </button>
-                           </form>
-                        </td>
-                     </tr>
-                     {% endfor %}
-                  </tbody>
-               </table>
-            </div>
-
-            <!-- Paginação -->
-            <div class="d-flex justify-content-between mt-3">
-               {% if lancamentos.has_prev %}
-               <a href="{{ url_for('lancamentomateriais', page=lancamentos.prev_num) }}" class="btn btn-secondary">
-                  Anterior
-               </a>
-               {% else %}
-               <span></span>
-               {% endif %}
-
-               <span>Página {{ lancamentos.page }} de {{ lancamentos.pages }}</span>
-
-               {% if lancamentos.has_next %}
-               <a href="{{ url_for('lancamentomateriais', page=lancamentos.next_num) }}" class="btn btn-secondary">
-                  Próxima
-               </a>
-               {% else %}
-               <span></span>
-               {% endif %}
-            </div>
-
+<div class="col out-sidebar">
+   <div class="card">
+      <div class="card-header card-header-padrao">
+         <div class="card-titulo-padrao">
+            Lançamento de Custo - Materiais
          </div>
+         <div class="card-subtitulo-padrao">
+            <a href="{{ url_for('obras', prev_page='lancamentomateriais') }}">
+               {% if obra_selecionada %}
+               Obra Selecionada: {{ obra_selecionada.nome.capitalize() }}
+               {% else %}
+               Nenhuma obra foi selecionada!
+               {% endif %}
+            </a>
+         </div>
+      </div>
+      <div class="card-body">
+         <form method="POST" action="" id="NotaFiscalForm" class="w-100">
+            {{ form_nf.csrf_token }}
+            <div class="row">
+               <div class="form-group col-lg-3 col-md-6 col-12">
+                  {{ form_nf.data_lancamento.label(class="form-control-label") }}
+                  {{ form_nf.data_lancamento(class="form-control") }}
+               </div>
+               <div class="form-group col-lg-6 col-md-6 col-12">
+                  {{ form_nf.fornecedor_id.label(class="form-control-label") }}
+                  {{ form_nf.fornecedor_id(class="form-control") }}
+               </div>
+               <div class="form-group col-lg-3 col-md-6 col-12">
+                  {{ form_nf.nota_fiscal.label(class="form-control-label") }}
+                  {{ form_nf.nota_fiscal(class="form-control") }}
+               </div>
+            </div>
+
+            <div class="row">
+               <div class="form-group col-lg-3 col-md-6 col-12">
+                  {{ form_nf.entrada.label(class="form-control-label") }}
+                  {{ form_nf.entrada(class="form-control") }}
+               </div>
+               <div class="form-group col-lg-3 col-md-6 col-12">
+                  {{ form_nf.parcelas.label(class="form-control-label") }}
+                  {{ form_nf.parcelas(class="form-control") }}
+               </div>
+            </div>
+
+            <div class="card-subtitulo-padrao">
+               {% if obra_selecionada %}
+               {{ form_nf.confirmar_nf(class="btn btn-primary mt-3") }}
+               {% else %}
+               {{ form_nf.confirmar_nf(class="btn btn-primary mt-3", disabled=True) }}
+               {% endif %}
+            </div>
+         </form>
+
+         <hr>
+         <table class="table" id="myDataTable">
+            <thead>
+               <tr>
+                  <th>Data</th>
+                  <th>Fornecedor</th>
+                  <th>Nota Fiscal</th>
+                  <th>Etapa</th>
+                  <th>Subetapa</th>
+                  <th>Material</th>
+                  <th>Quantidade</th>
+                  <th>Preço Unit</th>
+                  <th>Valor Total</th>
+                  <th>Ações</th>
+               </tr>
+            </thead>
+            <tbody>
+               {% for lancamento in obra_selecionada.lancamentos_custo %}
+               <tr>
+                  <td>{{ lancamento.data_lancamento.strftime('%d/%m/%Y') }}</td>
+                  <td>{{ lancamento.fornecedor.nome.capitalize() }}</td>
+                  <td>{{ lancamento.nota_fiscal }}</td>
+                  <td>{{ lancamento.etapa.nome.capitalize() }}</td>
+                  <td>{{ lancamento.subetapa.nome.capitalize() }}</td>
+                  <td>{{ lancamento.material.nome.capitalize() }}</td>
+                  <td>{{ lancamento.quantidade }}</td>
+                  <td>{{ "{:,.2f}".format(lancamento.preco_unit).replace(",", ";").replace(".", ",").replace(";", ".")
+                     }}</td>
+                  <td>{{ "{:,.2f}".format(lancamento.quantidade * lancamento.preco_unit).replace(",", ";").replace(".",
+                     ",").replace(";", ".") }}</td>
+                  <td>
+                     <button type="button" class="btn"
+                        onclick="window.location='{{ url_for('lancamentomateriaiseditar', lancamentomateriais_id=lancamento.id) }}'">
+                        <img src="{{ url_for('static', filename='images/editar_24.png') }}" alt="editar">
+                     </button>
+                     <form action="{{ url_for('lancamentomateriais') }}" method="POST" style="display: inline;">
+                        <input type="hidden" name="lancamento_id" value="{{ lancamento.id }}">
+                        <input type="hidden" name="action" value="excluir">
+                        <button type="submit" class="btn">
+                           <img src="{{ url_for('static', filename='images/excluir_24.png') }}" alt="excluir">
+                        </button>
+                     </form>
+                  </td>
+               </tr>
+               {% endfor %}
+            </tbody>
+         </table>
       </div>
    </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 <script>
    document.addEventListener("DOMContentLoaded", function () {
-      if (typeof $.fn.DataTable !== "undefined") {
-         $('#myDataTable').DataTable({
-            "language": {
-               "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
-            },
-            "columnDefs": [
-               { "type": "date", targets: [0] }
-            ]
-         });
+      if (typeof jQuery == 'undefined') {
+         // console.error("Erro: jQuery ainda não foi carregado no lancamentocusto.html!");
       } else {
-         console.error("DataTables não foi carregado corretamente.");
+         // console.log("jQuery carregado corretamente no lancamentocusto.html!");
+
+         $(document).ready(function () {
+            flatpickr("#data_lancamento", {
+               dateFormat: "d/m/Y",
+               enableTime: false,
+               locale: "pt",
+            });
+
+            $('#myDataTable').DataTable({
+               "language": {
+                  "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
+               }
+            });
+         });
       }
    });
 </script>
+
 
 {% endblock %}
