@@ -16,7 +16,7 @@
             </a>
          </div>
       </div>
-      <div class="card-body">
+      <div class="card-body w-100">
          <div class="card-subtitulo-padrao mb-2">
             {% if obra_selecionada %}
             <button type="button" class="btn btn-primary mt-3" id="limparCampos">Novo Lançamento</button>
@@ -27,7 +27,7 @@
          <div class="row mb-4">
             <form method="POST" action="" id="LancamentoCustoForm" class="">
                {{ form_lancamento_servico.csrf_token }}
-               <div class="borda-lanc col-8">
+               <div class="borda-lanc col-12">
                   <div class="row">
                      <div class="form-group col-3">
                         {{ form_lancamento_servico.data_lancamento.label(class="form-control-label") }}

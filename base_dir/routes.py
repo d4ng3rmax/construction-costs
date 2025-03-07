@@ -554,9 +554,13 @@ def materiais():
         material_existente = Materiais.query.filter_by(nome=material_nome).first()
         if material_existente:
             flash("Já existe um material com esse nome!", "alert-danger")
-            return redirect(url_for("materiais"))
+            return render_template(
+                "materiais.html",
+                form_materiais=form_materiais,
+                usuario=usuario,
+                materiais=sorted(usuario.materiais, key=lambda m: m.nome),
+            )
 
-        # Verificar limite de materiais antes de adicionar um novo
         n_materiais = len(usuario.materiais)
         limite_materiais = 10 if usuario.plano == "Básico" else 250
 
@@ -565,25 +569,25 @@ def materiais():
                 "Limite máximo de materiais cadastrados já foi atingido!",
                 "alert-danger",
             )
-            return redirect(url_for("materiais"))  # 🔄 Garante a atualização da lista
+            return render_template(
+                "materiais.html",
+                form_materiais=form_materiais,
+                usuario=usuario,
+                materiais=sorted(usuario.materiais, key=lambda m: m.nome),
+            )
 
-        # Criar novo material
         novo_material = Materiais(nome=material_nome, usuario=usuario)
         db.session.add(novo_material)
         db.session.commit()
         flash("Material cadastrado com sucesso!", "alert-success")
 
-        return redirect(
-            url_for("materiais")
-        )  # 🔄 Redirecionamento para atualizar a lista
+        return redirect(url_for("materiais"))
 
-    # 🔄 Carregar lista de materiais corretamente
     materiais_ordenados = sorted(usuario.materiais, key=lambda item: item.nome.lower())
 
     material_id = request.form.get("material_id")
     action = request.form.get("action")
 
-    # Excluir material, se solicitado
     if action == "excluir":
         material = Materiais.query.get(material_id)
         if material:
