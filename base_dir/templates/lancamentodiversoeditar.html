@@ -182,18 +182,31 @@
 
 
 <script>
-   $(document).ready(function () {
-      $('#myDataTable').DataTable({
-         "language": {
-            "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
-         },
-         "columnDefs": [
-            { "type": "date", targets: [0] }
-         ]
-         //"pageLength": -1,
-         //"lengthChange": false,
-         //"info": false,
-         //"paging": false
+   document.addEventListener("DOMContentLoaded", function () {
+      function waitForJQuery(callback) {
+         if (typeof $ !== "undefined") {
+            $(document).ready(callback);
+         } else {
+            console.warn("jQuery ainda não carregado. Tentando novamente...");
+            setTimeout(() => waitForJQuery(callback), 100);
+         }
+      }
+
+      waitForJQuery(function () {
+         console.log("jQuery carregado corretamente!");
+
+         if (!$.fn.dataTable.isDataTable("#myDataTable")) {
+            $('#myDataTable').DataTable({
+               "language": {
+                  "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
+               },
+               "columnDefs": [
+                  { "type": "date", targets: [0] }
+               ]
+            });
+         } else {
+            console.warn("DataTable já foi inicializado. Pulando reinicialização.");
+         }
       });
    });
 </script>
