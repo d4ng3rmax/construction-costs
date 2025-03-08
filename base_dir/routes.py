@@ -940,23 +940,27 @@ def lancamentomateriais():
         )
         return redirect(url_for("obras"))
 
-    from base_dir.models import Fornecedores
-
     fornecedores = Fornecedores.query.all()
     form_nf.fornecedor_id.choices = [(f.id, f.nome) for f in fornecedores]
 
-    page = request.args.get("page", 1, type=int)
-    per_page = 20
-    lancamentos = LancamentoCusto.query.filter_by(obra_id=obra_selecionada.id).paginate(
-        page=page, per_page=per_page, error_out=False
-    )
+    if "adicionar_item" in request.form:
+        if form_nf.validate_on_submit():
+            pass
+        else:
+            flash("Preencha todos os campos obrigatórios corretamente!", "alert-danger")
+            return render_template(
+                "lancamentocusto.html",
+                form_nf=form_nf,
+                usuario=usuario,
+                obra_selecionada=obra_selecionada,
+                errors=form_nf.errors,
+            )
 
     return render_template(
         "lancamentocusto.html",
         form_nf=form_nf,
         usuario=usuario,
         obra_selecionada=obra_selecionada,
-        lancamentos=lancamentos,
     )
 
 

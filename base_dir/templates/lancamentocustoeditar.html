@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block body %}
 <div class="col out-sidebar">
    <div class="card">
@@ -26,11 +27,11 @@
             {% endif %}
          </div>
          <div class="row mb-4">
-            <form method="POST" action="" id="LancamentoCustoForm" class="">
+            <form method="POST" action="" id="LancamentoCustoForm" class="w-100">
                {{ form_editar_lancamento_custo.csrf_token }}
-               <div class="borda-lanc col-8">
+               <div class="borda-lanc col-lg-3 col-md-6 col-12">
                   <div class="row">
-                     <div class="form-group col-3">
+                     <div class="form-group col-lg-3 col-md-6 col-12">
                         {{ form_editar_lancamento_custo.data_lancamento.label(class="form-control-label") }}
                         {% if form_editar_lancamento_custo.data_lancamento.errors %}
                         {{ form_editar_lancamento_custo.data_lancamento(class="form-control is-invalid") }}
@@ -43,7 +44,7 @@
                         {{ form_editar_lancamento_custo.data_lancamento(class="form-control") }}
                         {% endif %}
                      </div>
-                     <div class="form-group col-6">
+                     <div class="form-group col-lg-3 col-md-6 col-12">
                         {{ form_editar_lancamento_custo.fornecedor_id.label(class="form-control-label") }}
                         {% if form_editar_lancamento_custo.fornecedor_id.errors %}
                         {{ form_editar_lancamento_custo.fornecedor_id(class="form-control is-invalid") }}
@@ -56,7 +57,7 @@
                         {{ form_editar_lancamento_custo.fornecedor_id(class="form-control") }}
                         {% endif %}
                      </div>
-                     <div class="form-group col-3">
+                     <div class="form-group col-lg-3 col-md-6 col-12">
                         {{ form_editar_lancamento_custo.nota_fiscal.label(class="form-control-label") }}
                         {% if form_editar_lancamento_custo.nota_fiscal.errors %}
                         {{ form_editar_lancamento_custo.nota_fiscal(class="form-control is-invalid") }}

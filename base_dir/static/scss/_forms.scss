@@ -1,3 +1,16 @@
+#data_lancamento.form-control:disabled,
+#data_lancamento.form-control[readonly] {
+   background-color: var(--color-yellow-v800);
+}
+#data_lancamento.form-control {
+   font-weight: 600;
+
+   &:focus {
+      color: var(--color-blue-v200);
+      font-weight: 600;
+   }
+}
+
 #registration-works {
    input.area {
       &::placeholder {

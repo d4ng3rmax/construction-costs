@@ -32,6 +32,9 @@
                <div class="form-group col-lg-3 col-md-6 col-12">
                   {{ form_nf.nota_fiscal.label(class="form-control-label") }}
                   {{ form_nf.nota_fiscal(class="form-control") }}
+                  {% if form_nf.nota_fiscal.errors %}
+                  <small class="text-danger">{{ form_nf.nota_fiscal.errors[0] }}</small>
+                  {% endif %}
                </div>
             </div>
 
@@ -108,27 +111,66 @@
 
 <script>
    document.addEventListener("DOMContentLoaded", function () {
-      if (typeof jQuery == 'undefined') {
-         // console.error("Erro: jQuery ainda não foi carregado no lancamentocusto.html!");
-      } else {
-         // console.log("jQuery carregado corretamente no lancamentocusto.html!");
-
-         $(document).ready(function () {
-            flatpickr("#data_lancamento", {
-               dateFormat: "d/m/Y",
-               enableTime: false,
-               locale: "pt",
-            });
-
-            $('#myDataTable').DataTable({
-               "language": {
-                  "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
-               }
-            });
-         });
+      function waitForJQuery(callback) {
+         if (typeof $ !== "undefined") {
+            $(document).ready(callback);
+         } else {
+            console.warn("jQuery ainda não carregado. Tentando novamente...");
+            setTimeout(() => waitForJQuery(callback), 100);
+         }
       }
-   });
-</script>
 
+      waitForJQuery(function () {
+         console.log("jQuery carregado corretamente no lancamentocusto.html!");
+
+         flatpickr("#data_lancamento", {
+            dateFormat: "d/m/Y",
+            enableTime: false,
+            locale: "pt",
+         });
+
+         $('#myDataTable').DataTable({
+            "language": {
+               "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
+            }
+         });
+
+         function waitForElement(selector, callback) {
+            const element = document.querySelector(selector);
+            if (element) {
+               callback(element);
+            } else {
+               setTimeout(() => waitForElement(selector, callback), 100);
+            }
+         }
+
+         waitForElement("#etapa_id", function (etapaSelect) {
+            const subetapaSelect = document.getElementById("subetapa_id");
+
+            if (subetapaSelect) {
+               etapaSelect.addEventListener("change", function () {
+                  const etapaId = this.value;
+                  subetapaSelect.innerHTML = '<option value="99999">Selecione uma subetapa...</option>';
+
+                  if (etapaId !== "99999") {
+                     fetch(`/obter_subetapas_por_etapa?etapa_id=${etapaId}`)
+                        .then(response => response.json())
+                        .then(data => {
+                           data.forEach(subetapa => {
+                              subetapaSelect.innerHTML += `<option value="${subetapa.id}">${subetapa.nome}</option>`;
+                           });
+                        })
+                        .catch(error => console.error("Erro ao carregar subetapas:", error));
+                  }
+               });
+            } else {
+               console.error("Erro: Elemento subetapa_id não encontrado no DOM.");
+            }
+         });
+      });
+   });
+
+
+</script>
 
 {% endblock %}

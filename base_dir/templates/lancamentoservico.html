@@ -234,29 +234,55 @@
 
 
 <script>
-   $(document).ready(function () {
-      $("#etapa_id").change(function () {
-         var etapaId = $(this).val();
+   document.addEventListener("DOMContentLoaded", function () {
+      function waitForJQuery(callback) {
+         if (typeof $ !== "undefined") {
+            $(document).ready(callback);
+         } else {
+            console.warn("jQuery ainda não carregado. Tentando novamente...");
+            setTimeout(() => waitForJQuery(callback), 100);
+         }
+      }
 
-         $.ajax({
-            type: "GET",
-            url: "{{ url_for('obter_subetapas_por_etapa') }}",
-            data: { etapa_id: etapaId },
-            success: function (response) {
-               $("#subetapa_id").empty();
+      waitForJQuery(function () {
+         console.log("jQuery carregado corretamente!");
 
-               for (var i = 0; i < response.length; i++) {
-                  var subetapaNome = response[i].nome.charAt(0).toUpperCase() + response[i].nome.slice(1);
-                  $("#subetapa_id").append('<option value="' + response[i].id + '">' + subetapaNome + '</option>');
+         $("#etapa_id").change(function () {
+            var etapaId = $(this).val();
+
+            $.ajax({
+               type: "GET",
+               url: "{{ url_for('obter_subetapas_por_etapa') }}",
+               data: { etapa_id: etapaId },
+               success: function (response) {
+                  $("#subetapa_id").empty();
+                  $("#subetapa_id").append('<option value="99999">Selecione uma subetapa...</option>');
+
+                  for (var i = 0; i < response.length; i++) {
+                     var subetapaNome = response[i].nome.charAt(0).toUpperCase() + response[i].nome.slice(1);
+                     $("#subetapa_id").append('<option value="' + response[i].id + '">' + subetapaNome + '</option>');
+                  }
+               },
+               error: function (error) {
+                  console.log("Erro ao obter subetapas:", error);
                }
-            },
-            error: function (error) {
-               console.log("Erro ao obter subetapas:", error);
+            });
+         });
+
+         $('#myDataTable').DataTable({
+            "language": {
+               "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
             }
          });
+
+         document.getElementById('limparCampos').addEventListener('click', function () {
+            window.location.href = "{{ url_for('lancamentomateriais') }}";
+         });
+
       });
    });
 </script>
+
 
 <script>
 
@@ -292,18 +318,33 @@
 
 
 <script>
-   $(document).ready(function () {
-      $('#myDataTable').DataTable({
-         "language": {
-            "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
+   document.addEventListener("DOMContentLoaded", function () {
+      function waitForJQuery(callback) {
+         if (typeof $ !== "undefined") {
+            $(document).ready(callback);
+         } else {
+            console.warn("jQuery ainda não carregado. Tentando novamente...");
+            setTimeout(() => waitForJQuery(callback), 100);
          }
-         //"pageLength": -1,
-         //"lengthChange": false,
-         //"info": false,
-         //"paging": false
+      }
+
+      waitForJQuery(function () {
+         console.log("jQuery carregado corretamente!");
+
+         if (!$.fn.dataTable.isDataTable("#myDataTable")) {
+            $('#myDataTable').DataTable({
+               "language": {
+                  "url": "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
+               }
+            });
+         } else {
+            console.warn("DataTable já foi inicializado. Pulando reinicialização.");
+         }
       });
    });
 </script>
+
+
 
 <script>
    document.getElementById('limparCampos').addEventListener('click', function () {
