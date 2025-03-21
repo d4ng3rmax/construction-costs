@@ -1,17 +1,26 @@
 from flask_wtf import FlaskForm
 from wtforms import (
-    StringField,
-    PasswordField,
-    SubmitField,
     BooleanField,
-    TextAreaField,
-    SelectField,
-    IntegerField,
+    DecimalField,
     FieldList,
-    FormField,
     FloatField,
+    FormField,
+    IntegerField,
+    PasswordField,
+    SelectField,
+    StringField,
+    SubmitField,
+    TextAreaField,
 )
-from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
+from wtforms.validators import (
+    DataRequired,
+    Email,
+    EqualTo,
+    InputRequired,
+    NumberRange,
+    Optional,
+    ValidationError,
+)
 from datetime import datetime
 import re
 
@@ -384,7 +393,21 @@ class MaterialItemForm(FlaskForm):
 class FormNotaFiscal(FlaskForm):
     data_lancamento = StringField("Data", validators=[DataRequired()])
     fornecedor_id = SelectField("Fornecedor", coerce=int, validators=[DataRequired()])
-    nota_fiscal = StringField("Nota Fiscal", validators=[DataRequired()])
+
+    # nota_fiscal = StringField("Nota Fiscal", validators=[DataRequired()])
+    nota_fiscal = IntegerField(
+        "Nota Fiscal", validators=[DataRequired(), InputRequired(), NumberRange(min=0)]
+    )
+    quantidade = DecimalField(
+        "Quantidade", validators=[InputRequired(), NumberRange(min=0)]
+    )
+    preco_unit = DecimalField(
+        "Preço Unitário", validators=[InputRequired(), NumberRange(min=0)]
+    )
+
+    # entrada = StringField('Entrada', validators=[Optional()])
+    # parcelas = StringField('Parcelas', validators=[Optional()])
+
     itens = FieldList(
         FormField(MaterialItemForm), min_entries=1
     )  # Lista dinâmica de materiais
@@ -395,4 +418,9 @@ class FormNotaFiscal(FlaskForm):
         coerce=int,
         default=1,
     )
+    etapa_id = SelectField("Etapa", validators=[DataRequired()], coerce=int)
+    subetapa_id = SelectField("Subetapa", validators=[DataRequired()], coerce=int)
+    material_id = SelectField("Material", validators=[DataRequired()], coerce=int)
+    quantidade = DecimalField("Quantidade", validators=[DataRequired()])
+    preco_unitario = DecimalField("Preço Unitário", validators=[DataRequired()])
     confirmar_nf = SubmitField("Lançar Nota Fiscal")

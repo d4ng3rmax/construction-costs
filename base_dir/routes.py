@@ -930,6 +930,12 @@ def obter_subetapas_por_etapa():
 @login_required
 def lancamentomateriais():
     form_nf = FormNotaFiscal()
+
+    form_nf.fornecedor_id.choices = [(f.id, f.nome) for f in Fornecedores.query.all()]
+    form_nf.etapa_id.choices = [(e.id, e.nome) for e in Etapa.query.all()]
+    form_nf.subetapa_id.choices = [(s.id, s.nome) for s in Subetapa.query.all()]
+    form_nf.material_id.choices = [(m.id, m.nome) for m in Materiais.query.all()]
+
     usuario = current_user
     obra_selecionada = Obra.query.filter_by(id=usuario.obra_selecionada).first()
 

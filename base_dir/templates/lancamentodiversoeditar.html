@@ -18,7 +18,7 @@
       </div>
       <div class="card-body">
          <div class="row mb-4">
-            <form method="POST" action="" id="LancamentodiversoForm" class="">
+            <form method="POST" action="" id="LancamentodiversoForm" class="w-100">
                {{ form_editar_lancamento_diverso.csrf_token }}
                <div class="borda-lanc col-8">
                   <div class="row">
@@ -155,12 +155,10 @@
 </script>
 
 <script>
-   // Função para armazenar a posição da janela antes do envio do formulário
    function storeScrollPosition() {
       sessionStorage.setItem('scrollPosition', window.scrollY);
    }
 
-   // Função para restaurar a posição da janela após o envio do formulário
    function restoreScrollPosition() {
       const scrollPosition = sessionStorage.getItem('scrollPosition');
       if (scrollPosition !== null) {
@@ -168,14 +166,12 @@
       }
    }
 
-   // Função a ser chamada após o carregamento da página
    document.addEventListener('DOMContentLoaded', function () {
-      restoreScrollPosition(); // Restaura a posição da janela
+      restoreScrollPosition();
 
-      // Captura o evento de envio do formulário
       const form = document.getElementById('LancamentodiversoForm');
       form.addEventListener('submit', function () {
-         storeScrollPosition(); // Armazena a posição da janela antes do envio
+         storeScrollPosition();
       });
    });
 </script>
